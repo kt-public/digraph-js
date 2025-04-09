@@ -1,9 +1,3 @@
-/* eslint-disable max-lines */
-/* eslint-disable max-depth */
-/* eslint-disable no-inline-comments */
-/* eslint-disable line-comment-position */
-/* eslint-disable max-nested-callbacks */
-
 import { describe, expect, it } from 'vitest';
 import { DiGraphRaw, toVertexRaw, VertexRawSerialized } from '../../src/raw/digraph';
 
