@@ -401,7 +401,6 @@ export class DiGraphRaw {
    * This method is used to deeply find either all lower dependencies of a given
    * vertex or all its upper dependencies.
    */
-  // eslint-disable-next-line max-params
   private *findDeepDependencies(
     dependencyTraversal: 'bottom-to-top' | 'top-to-bottom',
     rootVertex: VertexRaw,
