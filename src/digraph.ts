@@ -1,7 +1,6 @@
 import _ from 'lodash';
+import { Traversal } from './digraph-raw.js';
 import { VertexBody, VertexDefinition, VertexId } from './vertex.js';
-
-export type Traversal = 'bfs' | 'dfs';
 
 export class DiGraph<Vertex extends VertexDefinition<VertexBody>> {
   #vertices: Map<VertexId, Vertex>;

@@ -1,5 +1,5 @@
 import { describe, expect, test } from 'vitest';
-import { DiGraphRaw, Traversal, VertexRawSerialized } from '../../src/raw/digraph';
+import { DiGraphRaw, Traversal, VertexRawSerialized } from '../../src/digraph-raw';
 
 function* createRawVertices(...ids: string[]): Generator<VertexRawSerialized> {
   for (const id of ids) {
