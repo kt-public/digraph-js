@@ -842,11 +842,7 @@
   },
   "util/AsyncQueue.js": {
     "id": "util/AsyncQueue.js",
-    "adjacentTo": [
-      "HookWebpackError.js",
-      "WebpackError.js",
-      "util/ArrayQueue.js"
-    ],
+    "adjacentTo": ["HookWebpackError.js", "WebpackError.js", "util/ArrayQueue.js"],
     "body": {
       "size": 9640,
       "thirdPartyDependencies": [],
@@ -1444,10 +1440,7 @@
   },
   "web/JsonpChunkLoadingPlugin.js": {
     "id": "web/JsonpChunkLoadingPlugin.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "web/JsonpChunkLoadingRuntimeModule.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "web/JsonpChunkLoadingRuntimeModule.js"],
     "body": {
       "size": 3180,
       "thirdPartyDependencies": [],
@@ -1887,11 +1880,7 @@
   },
   "ModuleBuildError.js": {
     "id": "ModuleBuildError.js",
-    "adjacentTo": [
-      "ErrorHelpers.js",
-      "WebpackError.js",
-      "util/makeSerializable.js"
-    ],
+    "adjacentTo": ["ErrorHelpers.js", "WebpackError.js", "util/makeSerializable.js"],
     "body": {
       "size": 1626,
       "thirdPartyDependencies": [],
@@ -1900,11 +1889,7 @@
   },
   "ModuleError.js": {
     "id": "ModuleError.js",
-    "adjacentTo": [
-      "ErrorHelpers.js",
-      "WebpackError.js",
-      "util/makeSerializable.js"
-    ],
+    "adjacentTo": ["ErrorHelpers.js", "WebpackError.js", "util/makeSerializable.js"],
     "body": {
       "size": 1202,
       "thirdPartyDependencies": [],
@@ -1922,11 +1907,7 @@
   },
   "ModuleWarning.js": {
     "id": "ModuleWarning.js",
-    "adjacentTo": [
-      "ErrorHelpers.js",
-      "WebpackError.js",
-      "util/makeSerializable.js"
-    ],
+    "adjacentTo": ["ErrorHelpers.js", "WebpackError.js", "util/makeSerializable.js"],
     "body": {
       "size": 1280,
       "thirdPartyDependencies": [],
@@ -2033,10 +2014,7 @@
   },
   "dependencies/StaticExportsDependency.js": {
     "id": "dependencies/StaticExportsDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/NullDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/NullDependency.js"],
     "body": {
       "size": 1620,
       "thirdPartyDependencies": [],
@@ -2045,10 +2023,7 @@
   },
   "container/ContainerExposedDependency.js": {
     "id": "container/ContainerExposedDependency.js",
-    "adjacentTo": [
-      "dependencies/ModuleDependency.js",
-      "util/makeSerializable.js"
-    ],
+    "adjacentTo": ["dependencies/ModuleDependency.js", "util/makeSerializable.js"],
     "body": {
       "size": 1156,
       "thirdPartyDependencies": [],
@@ -2057,12 +2032,7 @@
   },
   "dependencies/ModuleDependency.js": {
     "id": "dependencies/ModuleDependency.js",
-    "adjacentTo": [
-      "Dependency.js",
-      "DependencyTemplate.js",
-      "util/memoize.js",
-      "RawModule.js"
-    ],
+    "adjacentTo": ["Dependency.js", "DependencyTemplate.js", "util/memoize.js", "RawModule.js"],
     "body": {
       "size": 2252,
       "thirdPartyDependencies": [],
@@ -2080,10 +2050,7 @@
   },
   "container/FallbackItemDependency.js": {
     "id": "container/FallbackItemDependency.js",
-    "adjacentTo": [
-      "dependencies/ModuleDependency.js",
-      "util/makeSerializable.js"
-    ],
+    "adjacentTo": ["dependencies/ModuleDependency.js", "util/makeSerializable.js"],
     "body": {
       "size": 571,
       "thirdPartyDependencies": [],
@@ -2122,10 +2089,7 @@
   },
   "container/RemoteToExternalDependency.js": {
     "id": "container/RemoteToExternalDependency.js",
-    "adjacentTo": [
-      "dependencies/ModuleDependency.js",
-      "util/makeSerializable.js"
-    ],
+    "adjacentTo": ["dependencies/ModuleDependency.js", "util/makeSerializable.js"],
     "body": {
       "size": 592,
       "thirdPartyDependencies": [],
@@ -2394,10 +2358,7 @@
   },
   "dependencies/ConstDependency.js": {
     "id": "dependencies/ConstDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/NullDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/NullDependency.js"],
     "body": {
       "size": 3220,
       "thirdPartyDependencies": [],
@@ -2406,11 +2367,7 @@
   },
   "dependencies/ContextElementDependency.js": {
     "id": "dependencies/ContextElementDependency.js",
-    "adjacentTo": [
-      "Dependency.js",
-      "util/makeSerializable.js",
-      "dependencies/ModuleDependency.js"
-    ],
+    "adjacentTo": ["Dependency.js", "util/makeSerializable.js", "dependencies/ModuleDependency.js"],
     "body": {
       "size": 2289,
       "thirdPartyDependencies": [],
@@ -2419,10 +2376,7 @@
   },
   "dependencies/CssImportDependency.js": {
     "id": "dependencies/CssImportDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/ModuleDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/ModuleDependency.js"],
     "body": {
       "size": 2311,
       "thirdPartyDependencies": [],
@@ -2431,10 +2385,7 @@
   },
   "dependencies/CssLocalIdentifierDependency.js": {
     "id": "dependencies/CssLocalIdentifierDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/NullDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/NullDependency.js"],
     "body": {
       "size": 3043,
       "thirdPartyDependencies": [],
@@ -2456,10 +2407,7 @@
   },
   "dependencies/CssExportDependency.js": {
     "id": "dependencies/CssExportDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/NullDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/NullDependency.js"],
     "body": {
       "size": 2063,
       "thirdPartyDependencies": [],
@@ -2482,11 +2430,7 @@
   },
   "asset/RawDataUrlModule.js": {
     "id": "asset/RawDataUrlModule.js",
-    "adjacentTo": [
-      "Module.js",
-      "RuntimeGlobals.js",
-      "util/makeSerializable.js"
-    ],
+    "adjacentTo": ["Module.js", "RuntimeGlobals.js", "util/makeSerializable.js"],
     "body": {
       "size": 4401,
       "thirdPartyDependencies": [],
@@ -2495,10 +2439,7 @@
   },
   "dependencies/DelegatedSourceDependency.js": {
     "id": "dependencies/DelegatedSourceDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/ModuleDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/ModuleDependency.js"],
     "body": {
       "size": 575,
       "thirdPartyDependencies": [],
@@ -2516,10 +2457,7 @@
   },
   "dependencies/EntryDependency.js": {
     "id": "dependencies/EntryDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/ModuleDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/ModuleDependency.js"],
     "body": {
       "size": 581,
       "thirdPartyDependencies": [],
@@ -2528,11 +2466,7 @@
   },
   "dependencies/ExportsInfoDependency.js": {
     "id": "dependencies/ExportsInfoDependency.js",
-    "adjacentTo": [
-      "ExportsInfo.js",
-      "util/makeSerializable.js",
-      "dependencies/NullDependency.js"
-    ],
+    "adjacentTo": ["ExportsInfo.js", "util/makeSerializable.js", "dependencies/NullDependency.js"],
     "body": {
       "size": 3987,
       "thirdPartyDependencies": [],
@@ -2637,11 +2571,7 @@
   },
   "dependencies/HarmonyExportInitFragment.js": {
     "id": "dependencies/HarmonyExportInitFragment.js",
-    "adjacentTo": [
-      "InitFragment.js",
-      "RuntimeGlobals.js",
-      "util/SetHelpers.js"
-    ],
+    "adjacentTo": ["InitFragment.js", "RuntimeGlobals.js", "util/SetHelpers.js"],
     "body": {
       "size": 4529,
       "thirdPartyDependencies": [],
@@ -2650,10 +2580,7 @@
   },
   "dependencies/HarmonyExportHeaderDependency.js": {
     "id": "dependencies/HarmonyExportHeaderDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/NullDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/NullDependency.js"],
     "body": {
       "size": 1819,
       "thirdPartyDependencies": [],
@@ -2699,10 +2626,7 @@
   },
   "dependencies/HarmonyImportSideEffectDependency.js": {
     "id": "dependencies/HarmonyImportSideEffectDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/HarmonyImportDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/HarmonyImportDependency.js"],
     "body": {
       "size": 2821,
       "thirdPartyDependencies": [],
@@ -2735,10 +2659,7 @@
   },
   "dependencies/HarmonyEvaluatedImportSpecifierDependency.js": {
     "id": "dependencies/HarmonyEvaluatedImportSpecifierDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/HarmonyImportSpecifierDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/HarmonyImportSpecifierDependency.js"],
     "body": {
       "size": 3647,
       "thirdPartyDependencies": [],
@@ -2760,11 +2681,7 @@
   },
   "dependencies/ImportDependency.js": {
     "id": "dependencies/ImportDependency.js",
-    "adjacentTo": [
-      "Dependency.js",
-      "util/makeSerializable.js",
-      "dependencies/ModuleDependency.js"
-    ],
+    "adjacentTo": ["Dependency.js", "util/makeSerializable.js", "dependencies/ModuleDependency.js"],
     "body": {
       "size": 2989,
       "thirdPartyDependencies": [],
@@ -2773,10 +2690,7 @@
   },
   "dependencies/ImportEagerDependency.js": {
     "id": "dependencies/ImportEagerDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/ImportDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/ImportDependency.js"],
     "body": {
       "size": 2020,
       "thirdPartyDependencies": [],
@@ -2785,10 +2699,7 @@
   },
   "dependencies/ImportWeakDependency.js": {
     "id": "dependencies/ImportWeakDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/ImportDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/ImportDependency.js"],
     "body": {
       "size": 2004,
       "thirdPartyDependencies": [],
@@ -2797,10 +2708,7 @@
   },
   "dependencies/JsonExportsDependency.js": {
     "id": "dependencies/JsonExportsDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/NullDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/NullDependency.js"],
     "body": {
       "size": 2222,
       "thirdPartyDependencies": [],
@@ -2818,10 +2726,7 @@
   },
   "dependencies/LocalModuleDependency.js": {
     "id": "dependencies/LocalModuleDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/NullDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/NullDependency.js"],
     "body": {
       "size": 1856,
       "thirdPartyDependencies": [],
@@ -3085,10 +2990,7 @@
   },
   "dependencies/RequireResolveHeaderDependency.js": {
     "id": "dependencies/RequireResolveHeaderDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/NullDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/NullDependency.js"],
     "body": {
       "size": 1792,
       "thirdPartyDependencies": [],
@@ -3097,10 +2999,7 @@
   },
   "dependencies/RuntimeRequirementsDependency.js": {
     "id": "dependencies/RuntimeRequirementsDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/NullDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/NullDependency.js"],
     "body": {
       "size": 2311,
       "thirdPartyDependencies": [],
@@ -3134,10 +3033,7 @@
   },
   "dependencies/UnsupportedDependency.js": {
     "id": "dependencies/UnsupportedDependency.js",
-    "adjacentTo": [
-      "util/makeSerializable.js",
-      "dependencies/NullDependency.js"
-    ],
+    "adjacentTo": ["util/makeSerializable.js", "dependencies/NullDependency.js"],
     "body": {
       "size": 1642,
       "thirdPartyDependencies": [],
@@ -3162,11 +3058,7 @@
   },
   "dependencies/WebAssemblyExportImportedDependency.js": {
     "id": "dependencies/WebAssemblyExportImportedDependency.js",
-    "adjacentTo": [
-      "Dependency.js",
-      "util/makeSerializable.js",
-      "dependencies/ModuleDependency.js"
-    ],
+    "adjacentTo": ["Dependency.js", "util/makeSerializable.js", "dependencies/ModuleDependency.js"],
     "body": {
       "size": 2073,
       "thirdPartyDependencies": [],
@@ -3274,11 +3166,7 @@
   },
   "DllModule.js": {
     "id": "DllModule.js",
-    "adjacentTo": [
-      "Module.js",
-      "RuntimeGlobals.js",
-      "util/makeSerializable.js"
-    ],
+    "adjacentTo": ["Module.js", "RuntimeGlobals.js", "util/makeSerializable.js"],
     "body": {
       "size": 4502,
       "thirdPartyDependencies": [],
@@ -3343,10 +3231,7 @@
   },
   "sharing/ConsumeSharedFallbackDependency.js": {
     "id": "sharing/ConsumeSharedFallbackDependency.js",
-    "adjacentTo": [
-      "dependencies/ModuleDependency.js",
-      "util/makeSerializable.js"
-    ],
+    "adjacentTo": ["dependencies/ModuleDependency.js", "util/makeSerializable.js"],
     "body": {
       "size": 615,
       "thirdPartyDependencies": [],
@@ -3370,10 +3255,7 @@
   },
   "sharing/ProvideForSharedDependency.js": {
     "id": "sharing/ProvideForSharedDependency.js",
-    "adjacentTo": [
-      "dependencies/ModuleDependency.js",
-      "util/makeSerializable.js"
-    ],
+    "adjacentTo": ["dependencies/ModuleDependency.js", "util/makeSerializable.js"],
     "body": {
       "size": 654,
       "thirdPartyDependencies": [],
@@ -3744,11 +3626,7 @@
   },
   "asset/AssetSourceGenerator.js": {
     "id": "asset/AssetSourceGenerator.js",
-    "adjacentTo": [
-      "ConcatenationScope.js",
-      "Generator.js",
-      "RuntimeGlobals.js"
-    ],
+    "adjacentTo": ["ConcatenationScope.js", "Generator.js", "RuntimeGlobals.js"],
     "body": {
       "size": 2713,
       "thirdPartyDependencies": [],
@@ -3771,12 +3649,7 @@
   },
   "json/JsonGenerator.js": {
     "id": "json/JsonGenerator.js",
-    "adjacentTo": [
-      "ConcatenationScope.js",
-      "ExportsInfo.js",
-      "Generator.js",
-      "RuntimeGlobals.js"
-    ],
+    "adjacentTo": ["ConcatenationScope.js", "ExportsInfo.js", "Generator.js", "RuntimeGlobals.js"],
     "body": {
       "size": 5535,
       "thirdPartyDependencies": [],
@@ -3785,11 +3658,7 @@
   },
   "json/JsonParser.js": {
     "id": "json/JsonParser.js",
-    "adjacentTo": [
-      "Parser.js",
-      "dependencies/JsonExportsDependency.js",
-      "json/JsonData.js"
-    ],
+    "adjacentTo": ["Parser.js", "dependencies/JsonExportsDependency.js", "json/JsonData.js"],
     "body": {
       "size": 1724,
       "thirdPartyDependencies": [],
@@ -3873,11 +3742,7 @@
   },
   "DynamicEntryPlugin.js": {
     "id": "DynamicEntryPlugin.js",
-    "adjacentTo": [
-      "EntryOptionPlugin.js",
-      "EntryPlugin.js",
-      "dependencies/EntryDependency.js"
-    ],
+    "adjacentTo": ["EntryOptionPlugin.js", "EntryPlugin.js", "dependencies/EntryDependency.js"],
     "body": {
       "size": 2035,
       "thirdPartyDependencies": [],
@@ -3909,10 +3774,7 @@
   },
   "web/FetchCompileWasmPlugin.js": {
     "id": "web/FetchCompileWasmPlugin.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "wasm-sync/WasmChunkLoadingRuntimeModule.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "wasm-sync/WasmChunkLoadingRuntimeModule.js"],
     "body": {
       "size": 1872,
       "thirdPartyDependencies": [],
@@ -3936,10 +3798,7 @@
   },
   "wasm-sync/WebAssemblyUtils.js": {
     "id": "wasm-sync/WebAssemblyUtils.js",
-    "adjacentTo": [
-      "Template.js",
-      "dependencies/WebAssemblyImportDependency.js"
-    ],
+    "adjacentTo": ["Template.js", "dependencies/WebAssemblyImportDependency.js"],
     "body": {
       "size": 1861,
       "thirdPartyDependencies": [],
@@ -3948,10 +3807,7 @@
   },
   "web/FetchCompileAsyncWasmPlugin.js": {
     "id": "web/FetchCompileAsyncWasmPlugin.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "wasm-async/AsyncWasmLoadingRuntimeModule.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "wasm-async/AsyncWasmLoadingRuntimeModule.js"],
     "body": {
       "size": 1676,
       "thirdPartyDependencies": [],
@@ -4054,11 +3910,7 @@
   },
   "library/AmdLibraryPlugin.js": {
     "id": "library/AmdLibraryPlugin.js",
-    "adjacentTo": [
-      "ExternalModule.js",
-      "Template.js",
-      "library/AbstractLibraryPlugin.js"
-    ],
+    "adjacentTo": ["ExternalModule.js", "Template.js", "library/AbstractLibraryPlugin.js"],
     "body": {
       "size": 4505,
       "thirdPartyDependencies": [],
@@ -4067,11 +3919,7 @@
   },
   "library/UmdLibraryPlugin.js": {
     "id": "library/UmdLibraryPlugin.js",
-    "adjacentTo": [
-      "ExternalModule.js",
-      "Template.js",
-      "library/AbstractLibraryPlugin.js"
-    ],
+    "adjacentTo": ["ExternalModule.js", "Template.js", "library/AbstractLibraryPlugin.js"],
     "body": {
       "size": 9588,
       "thirdPartyDependencies": [],
@@ -4104,11 +3952,7 @@
   },
   "library/ModuleLibraryPlugin.js": {
     "id": "library/ModuleLibraryPlugin.js",
-    "adjacentTo": [
-      "Template.js",
-      "util/propertyAccess.js",
-      "library/AbstractLibraryPlugin.js"
-    ],
+    "adjacentTo": ["Template.js", "util/propertyAccess.js", "library/AbstractLibraryPlugin.js"],
     "body": {
       "size": 3081,
       "thirdPartyDependencies": [],
@@ -4204,12 +4048,7 @@
   },
   "css/CssExportsGenerator.js": {
     "id": "css/CssExportsGenerator.js",
-    "adjacentTo": [
-      "ExportsInfo.js",
-      "Generator.js",
-      "RuntimeGlobals.js",
-      "Template.js"
-    ],
+    "adjacentTo": ["ExportsInfo.js", "Generator.js", "RuntimeGlobals.js", "Template.js"],
     "body": {
       "size": 4214,
       "thirdPartyDependencies": [],
@@ -4289,11 +4128,7 @@
   },
   "runtime/AsyncModuleRuntimeModule.js": {
     "id": "runtime/AsyncModuleRuntimeModule.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "Template.js",
-      "runtime/HelperRuntimeModule.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "Template.js", "runtime/HelperRuntimeModule.js"],
     "body": {
       "size": 4045,
       "thirdPartyDependencies": [],
@@ -4326,11 +4161,7 @@
   },
   "runtime/CompatGetDefaultExportRuntimeModule.js": {
     "id": "runtime/CompatGetDefaultExportRuntimeModule.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "Template.js",
-      "runtime/HelperRuntimeModule.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "Template.js", "runtime/HelperRuntimeModule.js"],
     "body": {
       "size": 1066,
       "thirdPartyDependencies": [],
@@ -4348,11 +4179,7 @@
   },
   "runtime/CreateFakeNamespaceObjectRuntimeModule.js": {
     "id": "runtime/CreateFakeNamespaceObjectRuntimeModule.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "Template.js",
-      "runtime/HelperRuntimeModule.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "Template.js", "runtime/HelperRuntimeModule.js"],
     "body": {
       "size": 2327,
       "thirdPartyDependencies": [],
@@ -4361,11 +4188,7 @@
   },
   "runtime/CreateScriptRuntimeModule.js": {
     "id": "runtime/CreateScriptRuntimeModule.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "Template.js",
-      "runtime/HelperRuntimeModule.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "Template.js", "runtime/HelperRuntimeModule.js"],
     "body": {
       "size": 852,
       "thirdPartyDependencies": [],
@@ -4374,11 +4197,7 @@
   },
   "runtime/CreateScriptUrlRuntimeModule.js": {
     "id": "runtime/CreateScriptUrlRuntimeModule.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "Template.js",
-      "runtime/HelperRuntimeModule.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "Template.js", "runtime/HelperRuntimeModule.js"],
     "body": {
       "size": 859,
       "thirdPartyDependencies": [],
@@ -4387,11 +4206,7 @@
   },
   "runtime/DefinePropertyGettersRuntimeModule.js": {
     "id": "runtime/DefinePropertyGettersRuntimeModule.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "Template.js",
-      "runtime/HelperRuntimeModule.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "Template.js", "runtime/HelperRuntimeModule.js"],
     "body": {
       "size": 1073,
       "thirdPartyDependencies": [],
@@ -4409,12 +4224,7 @@
   },
   "runtime/GetChunkFilenameRuntimeModule.js": {
     "id": "runtime/GetChunkFilenameRuntimeModule.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "RuntimeModule.js",
-      "Template.js",
-      "util/SetHelpers.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "RuntimeModule.js", "Template.js", "util/SetHelpers.js"],
     "body": {
       "size": 8457,
       "thirdPartyDependencies": [],
@@ -4432,11 +4242,7 @@
   },
   "runtime/GetTrustedTypesPolicyRuntimeModule.js": {
     "id": "runtime/GetTrustedTypesPolicyRuntimeModule.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "Template.js",
-      "runtime/HelperRuntimeModule.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "Template.js", "runtime/HelperRuntimeModule.js"],
     "body": {
       "size": 1968,
       "thirdPartyDependencies": [],
@@ -4463,11 +4269,7 @@
   },
   "runtime/MakeNamespaceObjectRuntimeModule.js": {
     "id": "runtime/MakeNamespaceObjectRuntimeModule.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "Template.js",
-      "runtime/HelperRuntimeModule.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "Template.js", "runtime/HelperRuntimeModule.js"],
     "body": {
       "size": 972,
       "thirdPartyDependencies": [],
@@ -4503,11 +4305,7 @@
   },
   "runtime/RelativeUrlRuntimeModule.js": {
     "id": "runtime/RelativeUrlRuntimeModule.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "Template.js",
-      "runtime/HelperRuntimeModule.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "Template.js", "runtime/HelperRuntimeModule.js"],
     "body": {
       "size": 1178,
       "thirdPartyDependencies": [],
@@ -4534,12 +4332,7 @@
   },
   "sharing/ShareRuntimeModule.js": {
     "id": "sharing/ShareRuntimeModule.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "RuntimeModule.js",
-      "Template.js",
-      "util/comparators.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "RuntimeModule.js", "Template.js", "util/comparators.js"],
     "body": {
       "size": 4637,
       "thirdPartyDependencies": [],
@@ -4606,10 +4399,7 @@
   },
   "ExportsInfoApiPlugin.js": {
     "id": "ExportsInfoApiPlugin.js",
-    "adjacentTo": [
-      "dependencies/ConstDependency.js",
-      "dependencies/ExportsInfoDependency.js"
-    ],
+    "adjacentTo": ["dependencies/ConstDependency.js", "dependencies/ExportsInfoDependency.js"],
     "body": {
       "size": 2072,
       "thirdPartyDependencies": [],
@@ -4942,10 +4732,7 @@
   },
   "dependencies/HarmonyTopLevelThisParserPlugin.js": {
     "id": "dependencies/HarmonyTopLevelThisParserPlugin.js",
-    "adjacentTo": [
-      "dependencies/ConstDependency.js",
-      "dependencies/HarmonyExports.js"
-    ],
+    "adjacentTo": ["dependencies/ConstDependency.js", "dependencies/HarmonyExports.js"],
     "body": {
       "size": 715,
       "thirdPartyDependencies": [],
@@ -5366,11 +5153,7 @@
   },
   "ModuleInfoHeaderPlugin.js": {
     "id": "ModuleInfoHeaderPlugin.js",
-    "adjacentTo": [
-      "ExportsInfo.js",
-      "Template.js",
-      "javascript/JavascriptModulesPlugin.js"
-    ],
+    "adjacentTo": ["ExportsInfo.js", "Template.js", "javascript/JavascriptModulesPlugin.js"],
     "body": {
       "size": 7174,
       "thirdPartyDependencies": [],
@@ -5783,11 +5566,7 @@
   },
   "optimize/RemoveParentModulesPlugin.js": {
     "id": "optimize/RemoveParentModulesPlugin.js",
-    "adjacentTo": [
-      "OptimizationStages.js",
-      "util/Queue.js",
-      "util/SetHelpers.js"
-    ],
+    "adjacentTo": ["OptimizationStages.js", "util/Queue.js", "util/SetHelpers.js"],
     "body": {
       "size": 3798,
       "thirdPartyDependencies": [],
@@ -5881,10 +5660,7 @@
   },
   "optimize/InnerGraphPlugin.js": {
     "id": "optimize/InnerGraphPlugin.js",
-    "adjacentTo": [
-      "dependencies/PureExpressionDependency.js",
-      "optimize/InnerGraph.js"
-    ],
+    "adjacentTo": ["dependencies/PureExpressionDependency.js", "optimize/InnerGraph.js"],
     "body": {
       "size": 12046,
       "thirdPartyDependencies": [],
@@ -5893,12 +5669,7 @@
   },
   "optimize/MangleExportsPlugin.js": {
     "id": "optimize/MangleExportsPlugin.js",
-    "adjacentTo": [
-      "ExportsInfo.js",
-      "Template.js",
-      "ids/IdHelpers.js",
-      "util/comparators.js"
-    ],
+    "adjacentTo": ["ExportsInfo.js", "Template.js", "ids/IdHelpers.js", "util/comparators.js"],
     "body": {
       "size": 5149,
       "thirdPartyDependencies": [],
@@ -5907,11 +5678,7 @@
   },
   "ids/IdHelpers.js": {
     "id": "ids/IdHelpers.js",
-    "adjacentTo": [
-      "util/createHash.js",
-      "util/identifier.js",
-      "util/numberHash.js"
-    ],
+    "adjacentTo": ["util/createHash.js", "util/identifier.js", "util/numberHash.js"],
     "body": {
       "size": 12875,
       "thirdPartyDependencies": [],
@@ -6018,10 +5785,7 @@
   },
   "wasm-sync/WasmFinalizeExportsPlugin.js": {
     "id": "wasm-sync/WasmFinalizeExportsPlugin.js",
-    "adjacentTo": [
-      "formatLocation.js",
-      "wasm-sync/UnsupportedWebAssemblyFeatureError.js"
-    ],
+    "adjacentTo": ["formatLocation.js", "wasm-sync/UnsupportedWebAssemblyFeatureError.js"],
     "body": {
       "size": 2487,
       "thirdPartyDependencies": [],
@@ -6396,10 +6160,7 @@
   },
   "DelegatedPlugin.js": {
     "id": "DelegatedPlugin.js",
-    "adjacentTo": [
-      "DelegatedModuleFactoryPlugin.js",
-      "dependencies/DelegatedSourceDependency.js"
-    ],
+    "adjacentTo": ["DelegatedModuleFactoryPlugin.js", "dependencies/DelegatedSourceDependency.js"],
     "body": {
       "size": 1015,
       "thirdPartyDependencies": [],
@@ -6521,10 +6282,7 @@
   },
   "IgnorePlugin.js": {
     "id": "IgnorePlugin.js",
-    "adjacentTo": [
-      "util/create-schema-validation.js",
-      "../schemas/plugins/IgnorePlugin.check.js"
-    ],
+    "adjacentTo": ["util/create-schema-validation.js", "../schemas/plugins/IgnorePlugin.check.js"],
     "body": {
       "size": 2253,
       "thirdPartyDependencies": [],
@@ -6905,12 +6663,7 @@
   },
   "sharing/ConsumeSharedRuntimeModule.js": {
     "id": "sharing/ConsumeSharedRuntimeModule.js",
-    "adjacentTo": [
-      "RuntimeGlobals.js",
-      "RuntimeModule.js",
-      "Template.js",
-      "util/semver.js"
-    ],
+    "adjacentTo": ["RuntimeGlobals.js", "RuntimeModule.js", "Template.js", "util/semver.js"],
     "body": {
       "size": 13134,
       "thirdPartyDependencies": [],

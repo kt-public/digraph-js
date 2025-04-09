@@ -1,3 +1,7 @@
+# digraph-js-next
+
+Fork of https://github.com/antoine-coulon/digraph-js
+
   <p align="center">
 	  <img alt="digraph-js" src="https://user-images.githubusercontent.com/43391199/191079632-ffe879dd-0591-4c9d-aab8-375689130854.png" width="350">
   </p>
@@ -26,14 +30,14 @@ $ npm install digraph-js
 ## How to use it
 
 ```js
-import { DiGraph } from "digraph-js";
-import assert from "node:assert";
+import { DiGraph } from 'digraph-js';
+import assert from 'node:assert';
 
 const myGraph = new DiGraph();
 
-const myDependencyA = { id: "dependencyA", adjacentTo: [], body: {} };
-const myDependencyB = { id: "dependencyB", adjacentTo: [], body: {} };
-const myDependencyC = { id: "dependencyC", adjacentTo: [], body: {} };
+const myDependencyA = { id: 'dependencyA', adjacentTo: [], body: {} };
+const myDependencyB = { id: 'dependencyB', adjacentTo: [], body: {} };
+const myDependencyC = { id: 'dependencyC', adjacentTo: [], body: {} };
 
 // Add vertices to the graph
 myGraph.addVertices(myDependencyA, myDependencyB, myDependencyC);
@@ -44,34 +48,33 @@ myGraph.addEdge({ from: myDependencyA.id, to: myDependencyB.id });
 // Graph traversels
 myGraph.addEdge({ from: myDependencyB.id, to: myDependencyC.id });
 // getDeepChildren traverses the graph in a Depth-First Search fashion
-const deepDependenciesOfA = myGraph.getDeepChildren("dependencyA");
+const deepDependenciesOfA = myGraph.getDeepChildren('dependencyA');
 // deepDependenciesOfA is an iterable structure that can be lazily consumed
-assert.deepEqual([...deepDependenciesOfA], ["dependencyB", "dependencyC"]);
+assert.deepEqual([...deepDependenciesOfA], ['dependencyB', 'dependencyC']);
 
 // Here we voluntarily create a cyclic dependency
 myGraph.addEdge({ from: myDependencyB.id, to: myDependencyA.id });
 // Detect if the Directed Graph is acyclic (Directed Acyclic Graph)
 assert.equal(myGraph.isAcyclic, false);
 assert.equal(myGraph.hasCycles(), true);
-assert.deepEqual(myGraph.findCycles().cycles, [["dependencyA", "dependencyB"]]);
+assert.deepEqual(myGraph.findCycles().cycles, [['dependencyA', 'dependencyB']]);
 
 // Limit cycles search or dependency depth
 // Imagine a case where the cycle is created at depth 6
 assert.equal(myGraph.hasCycles({ maxDepth: 5 }), false);
 // Or that you want to get all children of a vertex but with a max depth of 5
 // meaning that you don't want dependencies going over 5 generations
-assert.equal(myGraph.getDeepChildren("dependencyA"), 5);
-
+assert.equal(myGraph.getDeepChildren('dependencyA'), 5);
 
 // Traversals
 
-// Lazily pull vertices from the graph 
-for(const vertex of myGraph.traverse({ traversal: "dfs" })) {
+// Lazily pull vertices from the graph
+for (const vertex of myGraph.traverse({ traversal: 'dfs' })) {
   console.log(vertex.id);
 }
 
 // Eagerly pull all the graph vertices at once
-const graphVertices = myGraph.traverseEager({ traversal: "dfs" });
+const graphVertices = myGraph.traverseEager({ traversal: 'dfs' });
 console.log(graphVertices.length);
 ```
 
@@ -97,7 +100,7 @@ export function sayHello() {}
 **_main.js_**
 
 ```js
-import { sayHello } from "hello.js";
+import { sayHello } from 'hello.js';
 ```
 
 As you can see above, **main.js** imports **hello.js** to use the `sayHello`
