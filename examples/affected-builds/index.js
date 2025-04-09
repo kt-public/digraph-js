@@ -1,9 +1,9 @@
-import crypto from "node:crypto";
+import crypto from 'node:crypto';
 
-import { DiGraph } from "../../dist/index.js";
+import { DiGraph } from '../../dist/index.js';
 
 const lib1Metadata = {
-  id: "lib1",
+  id: 'lib1',
   adjacentTo: [],
   body: {
     component: `<lib3.MyLib3Component />`
@@ -11,13 +11,13 @@ const lib1Metadata = {
 };
 
 const lib2Metadata = {
-  id: "lib2",
+  id: 'lib2',
   adjacentTo: [],
   body: { component: `<div>hello lib2</div>` }
 };
 
 const lib3Metadata = {
-  id: "lib3",
+  id: 'lib3',
   adjacentTo: [],
   body: { component: `<MyLib3Component>hello lib3</MyLib3Component>` }
 };
@@ -44,18 +44,18 @@ const cache = {
 
 function isLibraryAffected(library) {
   const libraryHashedContent = crypto
-    .createHash("sha1")
+    .createHash('sha1')
     .update(library.body.component)
-    .digest("hex");
+    .digest('hex');
 
   return libraryHashedContent !== cache[library.id].component;
 }
 
 function buildLibrary(library) {
   const libraryHashedContent = crypto
-    .createHash("sha1")
+    .createHash('sha1')
     .update(library.body.component)
-    .digest("hex");
+    .digest('hex');
 
   console.log(`Building library: '${library.id}'`);
   // dependencyLib.buildFiles(); <= Webpack or any bundler
@@ -81,9 +81,7 @@ function buildAffected(library) {
 }
 
 function* buildAllRootLibraryDependencies(rootLibrary) {
-  for (const rootLibraryDependency of projectGraph.getLowerDependencies(
-    rootLibrary
-  )) {
+  for (const rootLibraryDependency of projectGraph.getLowerDependencies(rootLibrary)) {
     /**
      * Recursively build affected libraries starting from the deepest dependencies
      * of the root library.
@@ -105,15 +103,11 @@ function* buildAllRootLibraryDependencies(rootLibrary) {
  * unnecessary rebuild if possible)
  */
 function buildEverythingAffectedIncludingRootLibrary(rootLibrary) {
-  const rootLibraryDependencies = projectGraph.getLowerDependencies(
-    rootLibrary.id
-  );
+  const rootLibraryDependencies = projectGraph.getLowerDependencies(rootLibrary.id);
   const allRebuiltLibraries = [];
 
   for (const dependencyLibrary of rootLibraryDependencies) {
-    allRebuiltLibraries.push([
-      ...buildAllRootLibraryDependencies(dependencyLibrary)
-    ]);
+    allRebuiltLibraries.push([...buildAllRootLibraryDependencies(dependencyLibrary)]);
   }
 
   /**
@@ -124,9 +118,7 @@ function buildEverythingAffectedIncludingRootLibrary(rootLibrary) {
    * - Atleast one of the dependencies of the library changed
    */
   const HAS_LIBRARY_BEEN_REBUILT = true;
-  const atleastOneLibraryChanged = allRebuiltLibraries
-    .flat()
-    .includes(HAS_LIBRARY_BEEN_REBUILT);
+  const atleastOneLibraryChanged = allRebuiltLibraries.flat().includes(HAS_LIBRARY_BEEN_REBUILT);
 
   if (atleastOneLibraryChanged) {
     buildLibrary(rootLibrary);
@@ -137,17 +129,17 @@ function buildEverythingAffectedIncludingRootLibrary(rootLibrary) {
 }
 
 function buildProjectUsingAffectedStrategy() {
-  console.log("\n----STEP 1-----");
+  console.log('\n----STEP 1-----');
   // Building for the first time
   buildEverythingAffectedIncludingRootLibrary(lib1Metadata);
   /**
    * Building for the second time but no dependencies of lib1 changed (neither
    * lib3 or lib4) so it remains unaffected (i.e: using cache)
    */
-  console.log("\n----STEP 2-----");
+  console.log('\n----STEP 2-----');
   buildEverythingAffectedIncludingRootLibrary(lib1Metadata);
 
-  console.log("\n----STEP 3-----");
+  console.log('\n----STEP 3-----');
   /**
    * Let's now change the content of lib3's component.
    * Remember, lib1 depends on lib3 via the use of lib3.MyLib3Component.
@@ -158,7 +150,7 @@ function buildProjectUsingAffectedStrategy() {
     component: `<MyLib3Component>hello affected lib3!</MyLib3Component>`
   });
 
-  console.log("\n----STEP 4-----");
+  console.log('\n----STEP 4-----');
   /**
    * Now that lib3 (dependency of lib1) changed BOTH lib3 and lib1 are considered
    * affected.
@@ -167,7 +159,7 @@ function buildProjectUsingAffectedStrategy() {
    */
   buildEverythingAffectedIncludingRootLibrary(lib1Metadata);
 
-  console.log("\n----STEP 5-----");
+  console.log('\n----STEP 5-----');
   /**
    * Now that everything was rebuilt, we can easily use cached versions once
    * again.
