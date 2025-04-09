@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { performance } from 'node:perf_hooks';
-import { DiGraph } from '../../dist/index.js';
+import { DiGraph } from '../../dist/cjs/index.js';
 
 {
   console.log('----------------------------------------');

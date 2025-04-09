@@ -1,2 +1,3 @@
-export { DiGraph, Traversal } from './digraph.js';
-export type { VertexDefinition, VertexId, VertexBody } from './vertex.js';
+export { DiGraph } from './digraph.js';
+export * from './raw/digraph.js';
+export * from './vertex.js';
