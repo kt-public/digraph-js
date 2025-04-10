@@ -1,7 +1,7 @@
 import { describe, expect, test } from 'vitest';
-import { DiGraph, Traversal, VertexBody, VertexDefinition, VertexId } from '../src';
+import { DiGraph, Traversal, TVertex, VertexBody, VertexId } from '../src';
 
-type Vertex = VertexDefinition<any>;
+type Vertex = TVertex<any>;
 
 function* createRawVertices(...ids: VertexId[]): Generator<Vertex> {
   for (const id of ids) {
@@ -53,7 +53,7 @@ describe('Graph traversal', () => {
       const vertexB = makeVertex('b').raw();
       const vertexC = makeVertex('c').raw();
 
-      const vertices: VertexDefinition<VertexBody>[] = [vertexB, vertexC];
+      const vertices: TVertex<VertexBody>[] = [vertexB, vertexC];
       graph.addVertices(...vertices);
 
       const it = graph.traverse({ rootVertexId: 'a' });
