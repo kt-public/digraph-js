@@ -13,3 +13,5 @@ Make Directed Graphs traversal and construction effortless, also includes deep c
 # Dual-type package
 
 This package is compiled into a dual-type module es6 and commonjs, so it can be used in both environments. For example, azure functions have issues at the moment with using es6 modules.
+
+X
