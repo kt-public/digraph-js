@@ -15,10 +15,6 @@ abstract class CyclesBase<Vertex, Edge> implements ICycles<Vertex, Edge> {
   }
 }
 export class CyclesSimple<Vertex, Edge> extends CyclesBase<Vertex, Edge> {
-  constructor(graph: IDiGraph<Vertex, Edge>) {
-    super(graph);
-  }
-
   *findCycles(depthLimit: number = Number.POSITIVE_INFINITY): Generator<string[]> {
     const stack: string[] = [];
     const onStack = new Set<string>();
@@ -62,10 +58,6 @@ export class CyclesSimple<Vertex, Edge> extends CyclesBase<Vertex, Edge> {
 }
 
 export class CyclesJohnson<Vertex, Edge> extends CyclesBase<Vertex, Edge> {
-  constructor(graph: IDiGraph<Vertex, Edge>) {
-    super(graph);
-  }
-
   private cloneSimpleGraph(): IDiGraph<never, never> {
     const dict = this.graph.toDict();
     // Adjust dict to remove edges and vertices
