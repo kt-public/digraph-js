@@ -3,7 +3,6 @@ import { DiGraph, DiGraphDict, VertexWithId } from '../src';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Vertex = Record<string, any>;
-type Edge = never;
 
 function* createRawVertices(...ids: string[]): Generator<VertexWithId<Vertex>> {
   for (const id of ids) {
@@ -18,7 +17,7 @@ describe('Directed Graph Implementation', () => {
   describe('When managing vertices in the graph', () => {
     describe('When adding vertices', () => {
       it('should add the given vertex to the graph', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
+        const digraph = new DiGraph<Vertex>();
         const [vertexA] = [...createRawVertices('a')];
 
         digraph.addVertices(vertexA);
@@ -28,10 +27,10 @@ describe('Directed Graph Implementation', () => {
       });
 
       it('should not add vertices already in the graph', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
+        const digraph = new DiGraph<Vertex>();
 
         function expectGraphStructure() {
-          const expectedDict: DiGraphDict<Vertex, Edge> = {
+          const expectedDict: DiGraphDict<Vertex> = {
             vertices: {
               a: {},
               b: {},
@@ -74,7 +73,7 @@ describe('Directed Graph Implementation', () => {
     describe('When modifying vertices bodies', () => {
       describe('When updating vertices', () => {
         it('should only update one vertex with no dependencies', () => {
-          const digraph = new DiGraph<Vertex, Edge>();
+          const digraph = new DiGraph<Vertex>();
           const vertexA: VertexWithId<Vertex> = { id: 'a', vertex: {} };
           const vertexE: VertexWithId<Vertex> = { id: 'e', vertex: {} };
           const vertexB: VertexWithId<Vertex> = { id: 'b', vertex: {} };
@@ -110,12 +109,12 @@ describe('Directed Graph Implementation', () => {
     describe('When deleting vertices', () => {
       describe('When no vertices depends on the deleted one', () => {
         it('should only delete the isolated vertex', () => {
-          const digraph = new DiGraph<Vertex, Edge>();
+          const digraph = new DiGraph<Vertex>();
           const [vertexA, vertexB, vertexC, vertexD] = [...createRawVertices('a', 'b', 'c', 'd')];
 
           digraph.addVertices(vertexA, vertexB, vertexC, vertexD);
 
-          let expectedDict: DiGraphDict<Vertex, Edge> = {
+          let expectedDict: DiGraphDict<Vertex> = {
             vertices: {
               a: vertexA.vertex,
               b: vertexB.vertex,
@@ -142,7 +141,7 @@ describe('Directed Graph Implementation', () => {
 
       describe('When one or many vertices directly depends on the deleted one', () => {
         it('should delete the vertex and update the adjacency list of vertices directly depending on it', () => {
-          const digraph = new DiGraph<Vertex, Edge>();
+          const digraph = new DiGraph<Vertex>();
           const [vertexA, vertexB, vertexC, vertexD] = [...createRawVertices('a', 'b', 'c', 'd')];
 
           digraph.addVertices(vertexA, vertexB, vertexC, vertexD);
@@ -151,7 +150,7 @@ describe('Directed Graph Implementation', () => {
           digraph.addEdges({ from: vertexB.id, to: vertexC.id });
           digraph.addEdges({ from: vertexC.id, to: vertexA.id });
 
-          let expectedDict: DiGraphDict<Vertex, Edge> = {
+          let expectedDict: DiGraphDict<Vertex> = {
             vertices: {
               a: vertexA.vertex,
               b: vertexB.vertex,
@@ -195,7 +194,7 @@ describe('Directed Graph Implementation', () => {
       });
       describe('When deleting a vertex that does not exist in the graph', () => {
         it('should throw an error', () => {
-          const digraph = new DiGraph<Vertex, Edge>();
+          const digraph = new DiGraph<Vertex>();
           const [vertexA, vertexB] = [...createRawVertices('a', 'b')];
 
           digraph.addVertices(vertexA);
@@ -210,7 +209,7 @@ describe('Directed Graph Implementation', () => {
   describe('When managing edges in the graph', () => {
     describe('When adding edges to the graph', () => {
       it('should add edges between vertices', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
+        const digraph = new DiGraph<Vertex>();
         const [vertexA, vertexB, vertexC] = [...createRawVertices('a', 'b', 'c')];
 
         digraph.addVertices(vertexA, vertexB, vertexC);
@@ -231,7 +230,7 @@ describe('Directed Graph Implementation', () => {
       });
 
       it('should only add edges for vertices already added in the graph', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
+        const digraph = new DiGraph<Vertex>();
         const [vertexA, vertexB] = [...createRawVertices('a', 'b')];
 
         digraph.addVertices(vertexA);
@@ -240,7 +239,7 @@ describe('Directed Graph Implementation', () => {
         );
 
         expect(Array.from(digraph.getDescendantIds(vertexA.id))).deep.equal([]);
-        const expectedDict: DiGraphDict<Vertex, Edge> = {
+        const expectedDict: DiGraphDict<Vertex> = {
           vertices: {
             a: vertexA.vertex
           },
@@ -250,7 +249,7 @@ describe('Directed Graph Implementation', () => {
       });
 
       it('should not add duplicate edges', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
+        const digraph = new DiGraph<Vertex>();
         const [vertexA, vertexB, vertexC] = [...createRawVertices('a', 'b', 'c')];
 
         digraph.addVertices(vertexA, vertexB, vertexC);
@@ -273,7 +272,7 @@ describe('Directed Graph Implementation', () => {
       });
 
       it('should not allow adding an edge from a vertex to the same vertex', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
+        const digraph = new DiGraph<Vertex>();
         const vertexA: VertexWithId<Vertex> = { id: 'a', vertex: {} };
 
         digraph.addVertices(vertexA);
@@ -285,7 +284,7 @@ describe('Directed Graph Implementation', () => {
       });
 
       it('should not allow adding edges with duplicate ids', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
+        const digraph = new DiGraph<Vertex>();
         const [vertexA, vertexB, vertexC] = [...createRawVertices('a', 'b', 'c')];
 
         digraph.addVertices(vertexA, vertexB, vertexC);
@@ -300,7 +299,7 @@ describe('Directed Graph Implementation', () => {
     });
     describe('When deleting edges from the graph', () => {
       it('should fail when deleting edges that do not exist', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
+        const digraph = new DiGraph<Vertex>();
         const [vertexA, vertexB] = [...createRawVertices('a', 'b')];
 
         digraph.addVertices(vertexA);
@@ -334,7 +333,7 @@ describe('Directed Graph Implementation', () => {
     });
     describe('When iterating edges', () => {
       it('should iterate over edges in the graph', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
+        const digraph = new DiGraph<Vertex>();
         const [vertexA, vertexB, vertexC] = [...createRawVertices('a', 'b', 'c')];
 
         digraph.addVertices(vertexA, vertexB, vertexC);
@@ -352,7 +351,7 @@ describe('Directed Graph Implementation', () => {
   describe('When traversing the graph', () => {
     describe('When searching for all dependencies DEPENDING ON a given vertex', () => {
       it('should find direct adjacent vertices', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
+        const digraph = new DiGraph<Vertex>();
         const [vertexA, vertexB, vertexC] = [...createRawVertices('a', 'b', 'c')];
 
         digraph.addVertices(vertexA, vertexB, vertexC);
@@ -368,7 +367,7 @@ describe('Directed Graph Implementation', () => {
 
     describe('When searching for all dependencies OF a given vertex', () => {
       it('should find direct adjacent vertices', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
+        const digraph = new DiGraph<Vertex>();
         const [vertexA, vertexB, vertexC, vertexD] = [...createRawVertices('a', 'b', 'c', 'd')];
 
         digraph.addVertices(vertexA, vertexB, vertexC, vertexD);
@@ -386,7 +385,7 @@ describe('Directed Graph Implementation', () => {
 
   describe('When constructing DiGraph instances from a raw record', () => {
     it('should construct a DiGraph instance with vertices linked by edges', () => {
-      const rawGraph: DiGraphDict<Vertex, Edge> = {
+      const rawGraph: DiGraphDict<Vertex> = {
         vertices: {
           a: {
             someProperty: 'someValue'
