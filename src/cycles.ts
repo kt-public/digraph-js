@@ -85,6 +85,7 @@ export class CyclesJohnson<Vertex, Edge> extends CyclesBase<Vertex, Edge> {
     const blockMap = new Map<string, Set<string>>();
     const stack: string[] = [];
     const thisGraph = this.cloneSimpleGraph();
+    const cycleKeys = new Set<string>();
 
     function unblock(node: string) {
       blocked.delete(node);
@@ -107,8 +108,12 @@ export class CyclesJohnson<Vertex, Edge> extends CyclesBase<Vertex, Edge> {
         if (w === start) {
           // Cycle found
           const cycle = [...stack];
-          // cycle.push(start); // close the cycle
-          yield cycle;
+          const cycleKey = [...cycle].sort((a, b) => a.localeCompare(b)).join(',');
+          if (!cycleKeys.has(cycleKey)) {
+            cycleKeys.add(cycleKey);
+            // cycle.push(start); // close the cycle
+            yield cycle;
+          }
           foundCycle = true;
         } else if (!blocked.has(w)) {
           const subCycles = yield* circuit(w, start);
