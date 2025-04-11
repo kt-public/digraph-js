@@ -20,7 +20,7 @@ export type EdgeWithId<Edge> = [Edge] extends [never]
       edge: Edge;
     };
 
-export type DiGraphDict<Vertex, Edge> = {
+export type DiGraphDict<Vertex = never, Edge = never> = {
   vertices: Record<string, Vertex>;
   edges: Record<string, Record<string, Edge>>;
 };

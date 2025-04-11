@@ -4,7 +4,6 @@ import { CyclesJohnson, CyclesSimple } from '../src/cycles';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Vertex = Record<string, any>;
-type Edge = never;
 
 function* createRawVertices(...ids: string[]): Generator<VertexWithId<Vertex>> {
   for (const id of ids) {
@@ -18,7 +17,7 @@ function* createRawVertices(...ids: string[]): Generator<VertexWithId<Vertex>> {
 describe('Graph cycles', () => {
   describe('When providing a graph with cycles', () => {
     it('Should detect cycles in the graph', () => {
-      const dict: DiGraphDict<Vertex, Edge> = {
+      const dict: DiGraphDict<Vertex> = {
         vertices: {
           a: {},
           b: {},
@@ -42,7 +41,7 @@ describe('Graph cycles', () => {
       ]);
     });
     it('Should detect cycles in the graph with depth limit', () => {
-      const dict: DiGraphDict<Vertex, Edge> = {
+      const dict: DiGraphDict<Vertex> = {
         vertices: {
           a: {},
           b: {},
@@ -67,7 +66,7 @@ describe('Graph cycles', () => {
 
   describe('When providing a graph without cycles', () => {
     it('Should not detect cycles in the graph', () => {
-      const dict: DiGraphDict<Vertex, Edge> = {
+      const dict: DiGraphDict<Vertex> = {
         vertices: {
           a: {},
           b: {},
