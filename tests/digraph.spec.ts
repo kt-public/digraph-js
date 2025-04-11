@@ -3,7 +3,6 @@ import { DiGraph, DiGraphDict, VertexWithId } from '../src';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Vertex = Record<string, any>;
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Edge = never;
 
 function* createRawVertices(...ids: string[]): Generator<VertexWithId<Vertex>> {
@@ -25,6 +24,7 @@ describe('Directed Graph Implementation', () => {
         digraph.addVertices(vertexA);
 
         expect(digraph.hasVertex(vertexA.id)).to.equal(true);
+        expect(Array.from(digraph.getVertexIds())).to.deep.equal([vertexA.id]);
       });
 
       it('should not add vertices already in the graph', () => {
@@ -46,8 +46,11 @@ describe('Directed Graph Implementation', () => {
 
         const [vertexA, vertexB, vertexBis, vertexC] = [...createRawVertices('a', 'b', 'b', 'c')];
 
-        digraph.addVertices(vertexA, vertexB, vertexBis, vertexC);
+        expect(() => digraph.addVertices(vertexA, vertexB, vertexBis, vertexC)).to.throw(
+          'Duplicate vertex ids found in the input: b'
+        );
 
+        digraph.addVertices(vertexA, vertexB, vertexC);
         expectGraphStructure();
 
         const duplicatedVertexB: VertexWithId<Vertex> = {
@@ -112,20 +115,28 @@ describe('Directed Graph Implementation', () => {
 
           digraph.addVertices(vertexA, vertexB, vertexC, vertexD);
 
-          expect(digraph.toDict()).to.deep.equal({
-            a: vertexA,
-            b: vertexB,
-            c: vertexC,
-            d: vertexD
-          });
+          let expectedDict: DiGraphDict<Vertex, Edge> = {
+            vertices: {
+              a: vertexA.vertex,
+              b: vertexB.vertex,
+              c: vertexC.vertex,
+              d: vertexD.vertex
+            },
+            edges: {}
+          };
+          expect(digraph.toDict()).to.deep.equal(expectedDict);
 
           digraph.deleteVertices(vertexC.id);
 
-          expect(digraph.toDict()).to.deep.equal({
-            a: vertexA,
-            b: vertexB,
-            d: vertexD
-          });
+          expectedDict = {
+            vertices: {
+              a: vertexA.vertex,
+              b: vertexB.vertex,
+              d: vertexD.vertex
+            },
+            edges: {}
+          };
+          expect(digraph.toDict()).to.deep.equal(expectedDict);
         });
       });
 
@@ -140,20 +151,57 @@ describe('Directed Graph Implementation', () => {
           digraph.addEdges({ from: vertexB.id, to: vertexC.id });
           digraph.addEdges({ from: vertexC.id, to: vertexA.id });
 
-          expect(digraph.toDict()).to.deep.equal({
-            a: { ...vertexA, adjacentTo: [vertexD.id] },
-            b: { ...vertexB, adjacentTo: [vertexD.id, vertexC.id] },
-            c: { ...vertexC, adjacentTo: [vertexA.id] },
-            d: { ...vertexD, adjacentTo: [] }
-          });
+          let expectedDict: DiGraphDict<Vertex, Edge> = {
+            vertices: {
+              a: vertexA.vertex,
+              b: vertexB.vertex,
+              c: vertexC.vertex,
+              d: vertexD.vertex
+            },
+            edges: {
+              a: {
+                d: undefined as never
+              },
+              b: {
+                d: undefined as never,
+                c: undefined as never
+              },
+              c: {
+                a: undefined as never
+              }
+            }
+          };
+          expect(digraph.toDict()).to.deep.equal(expectedDict);
 
           digraph.deleteVertices(vertexD.id);
 
-          expect(digraph.toDict()).to.deep.equal({
-            a: { ...vertexA, adjacentTo: [] },
-            b: { ...vertexB, adjacentTo: [vertexC.id] },
-            c: { ...vertexC, adjacentTo: [vertexA.id] }
-          });
+          expectedDict = {
+            vertices: {
+              a: vertexA.vertex,
+              b: vertexB.vertex,
+              c: vertexC.vertex
+            },
+            edges: {
+              b: {
+                c: undefined as never
+              },
+              c: {
+                a: undefined as never
+              }
+            }
+          };
+          expect(digraph.toDict()).to.deep.equal(expectedDict);
+        });
+      });
+      describe('When deleting a vertex that does not exist in the graph', () => {
+        it('should throw an error', () => {
+          const digraph = new DiGraph<Vertex, Edge>();
+          const [vertexA, vertexB] = [...createRawVertices('a', 'b')];
+
+          digraph.addVertices(vertexA);
+          expect(() => digraph.deleteVertices(vertexB.id)).to.throw(
+            'Vertices do not exist in the graph: b'
+          );
         });
       });
     });
@@ -168,12 +216,18 @@ describe('Directed Graph Implementation', () => {
         digraph.addVertices(vertexA, vertexB, vertexC);
         digraph.addEdges({ from: vertexB.id, to: vertexA.id });
 
-        expect(digraph.getDescendantIds(vertexB.id)).deep.equal([vertexA.id]);
+        expect(Array.from(digraph.getDescendantIds(vertexB.id))).deep.equal([vertexA.id]);
 
         digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-        digraph.addVertices(vertexA, vertexB, vertexC);
+        expect(() => digraph.addVertices(vertexA, vertexB, vertexC)).to.throw(
+          'Vertices already exist in the graph: a, b, c'
+        );
 
-        expect(digraph.getDescendantIds(vertexB.id)).deep.equal([vertexA.id, vertexC.id]);
+        expect(Array.from(digraph.getDescendantIds(vertexB.id))).deep.equal([
+          vertexA.id,
+          vertexC.id
+        ]);
+        expect(digraph.getEdge({ from: vertexB.id, to: vertexA.id })).to.deep.equal(undefined);
       });
 
       it('should only add edges for vertices already added in the graph', () => {
@@ -181,13 +235,14 @@ describe('Directed Graph Implementation', () => {
         const [vertexA, vertexB] = [...createRawVertices('a', 'b')];
 
         digraph.addVertices(vertexA);
-        digraph.addEdges({ from: vertexA.id, to: vertexB.id });
+        expect(() => digraph.addEdges({ from: vertexA.id, to: vertexB.id })).to.throw(
+          'Edges point to non-existent vertices: b'
+        );
 
-        expect(digraph.getDescendantIds(vertexA.id)).deep.equal([]);
+        expect(Array.from(digraph.getDescendantIds(vertexA.id))).deep.equal([]);
         const expectedDict: DiGraphDict<Vertex, Edge> = {
           vertices: {
-            a: vertexA,
-            b: vertexB
+            a: vertexA.vertex
           },
           edges: {}
         };
@@ -200,14 +255,21 @@ describe('Directed Graph Implementation', () => {
 
         digraph.addVertices(vertexA, vertexB, vertexC);
         digraph.addEdges({ from: vertexB.id, to: vertexA.id });
-        digraph.addEdges({ from: vertexB.id, to: vertexA.id });
+        expect(() => digraph.addEdges({ from: vertexB.id, to: vertexA.id })).to.throw(
+          'Edges already exist in the graph: b->a'
+        );
 
-        expect(digraph.getDescendantIds(vertexB.id)).deep.equal([vertexA.id]);
+        expect(Array.from(digraph.getDescendantIds(vertexB.id))).deep.equal([vertexA.id]);
 
         digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-        digraph.addEdges({ from: vertexB.id, to: vertexC.id });
+        expect(() => digraph.addEdges({ from: vertexB.id, to: vertexC.id })).to.throw(
+          'Edges already exist in the graph: b->c'
+        );
 
-        expect(digraph.getDescendantIds(vertexB.id)).deep.equal([vertexA.id, vertexC.id]);
+        expect(Array.from(digraph.getDescendantIds(vertexB.id))).deep.equal([
+          vertexA.id,
+          vertexC.id
+        ]);
       });
 
       it('should not allow adding an edge from a vertex to the same vertex', () => {
@@ -215,9 +277,74 @@ describe('Directed Graph Implementation', () => {
         const vertexA: VertexWithId<Vertex> = { id: 'a', vertex: {} };
 
         digraph.addVertices(vertexA);
-        digraph.addEdges({ from: vertexA.id, to: vertexA.id });
+        expect(() => digraph.addEdges({ from: vertexA.id, to: vertexA.id })).to.throw(
+          'Self-loops are not allowed: a->a'
+        );
 
-        expect(digraph.getDescendantIds(vertexA.id)).to.deep.equal([]);
+        expect(Array.from(digraph.getDescendantIds(vertexA.id))).to.deep.equal([]);
+      });
+
+      it('should not allow adding edges with duplicate ids', () => {
+        const digraph = new DiGraph<Vertex, Edge>();
+        const [vertexA, vertexB, vertexC] = [...createRawVertices('a', 'b', 'c')];
+
+        digraph.addVertices(vertexA, vertexB, vertexC);
+        expect(() =>
+          digraph.addEdges(
+            { from: vertexA.id, to: vertexB.id },
+            { from: vertexA.id, to: vertexC.id },
+            { from: vertexA.id, to: vertexB.id }
+          )
+        ).to.throw('Duplicate edge ids found in the input: a->b');
+      });
+    });
+    describe('When deleting edges from the graph', () => {
+      it('should fail when deleting edges that do not exist', () => {
+        const digraph = new DiGraph<Vertex, Edge>();
+        const [vertexA, vertexB] = [...createRawVertices('a', 'b')];
+
+        digraph.addVertices(vertexA);
+        expect(() => digraph.deleteEdges({ from: vertexA.id, to: vertexB.id })).to.throw(
+          'Edges do not exist in the graph: a->b'
+        );
+      });
+    });
+    describe('When updating edges in the graph', () => {
+      it('should update the edge if it exists', () => {
+        const digraph = new DiGraph<Vertex, Record<string, unknown>>();
+        const [vertexA, vertexB] = [...createRawVertices('a', 'b')];
+
+        digraph.addVertices(vertexA, vertexB);
+        digraph.addEdges({ from: vertexA.id, to: vertexB.id, edge: {} });
+
+        expect(digraph.getEdge({ from: vertexA.id, to: vertexB.id })).to.deep.equal({});
+
+        digraph.updateEdge({
+          from: vertexA.id,
+          to: vertexB.id,
+          edge: {
+            someProperty: 'someValue'
+          }
+        });
+
+        expect(digraph.getEdge({ from: vertexA.id, to: vertexB.id })).to.deep.equal({
+          someProperty: 'someValue'
+        });
+      });
+    });
+    describe('When iterating edges', () => {
+      it('should iterate over edges in the graph', () => {
+        const digraph = new DiGraph<Vertex, Edge>();
+        const [vertexA, vertexB, vertexC] = [...createRawVertices('a', 'b', 'c')];
+
+        digraph.addVertices(vertexA, vertexB, vertexC);
+        digraph.addEdges({ from: vertexA.id, to: vertexB.id });
+        digraph.addEdges({ from: vertexB.id, to: vertexC.id });
+
+        expect(Array.from(digraph.getEdgeIds())).to.deep.equal([
+          { from: vertexA.id, to: vertexB.id },
+          { from: vertexB.id, to: vertexC.id }
+        ]);
       });
     });
   });
@@ -231,58 +358,11 @@ describe('Directed Graph Implementation', () => {
         digraph.addVertices(vertexA, vertexB, vertexC);
         digraph.addEdges({ from: vertexA.id, to: vertexB.id });
 
-        expect(digraph.getAncestors(vertexB.id)).to.deep.equal([vertexA]);
+        expect(Array.from(digraph.getAncestors(vertexB.id))).to.deep.equal([vertexA]);
 
         digraph.addEdges({ from: vertexC.id, to: vertexB.id });
 
-        expect(digraph.getAncestors(vertexB.id)).to.deep.equal([vertexA, vertexC]);
-      });
-
-      it('should find and deeply collect all vertices', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
-        const [vertexA, vertexB, vertexC, vertexD, vertexE, vertexF, vertexG] = [
-          ...createRawVertices('a', 'b', 'c', 'd', 'e', 'f', 'g')
-        ];
-
-        digraph.addVertices(vertexF, vertexC, vertexD, vertexA, vertexB, vertexE, vertexG);
-        digraph.addEdges({ from: vertexF.id, to: vertexA.id });
-        digraph.addEdges({ from: vertexB.id, to: vertexA.id });
-        digraph.addEdges({ from: vertexD.id, to: vertexA.id });
-        digraph.addEdges({ from: vertexC.id, to: vertexB.id });
-        digraph.addEdges({ from: vertexE.id, to: vertexD.id });
-        digraph.addEdges({ from: vertexG.id, to: vertexD.id });
-        digraph.addEdges({ from: vertexG.id, to: vertexA.id });
-
-        expect([...digraph.getDeepParentIds(vertexA.id)]).deep.equal([
-          'f',
-          'd',
-          'e',
-          'g',
-          'b',
-          'c'
-        ]);
-      });
-
-      describe('When cycles are in the graph', () => {
-        it('should deeply explore all vertices anyway', () => {
-          const digraph = new DiGraph<Vertex, Edge>();
-          const [vertexA, vertexB, vertexC, vertexD, vertexE, vertexF] = [
-            ...createRawVertices('a', 'b', 'c', 'd', 'e', 'f')
-          ];
-
-          digraph.addVertices(vertexF, vertexC, vertexD, vertexA, vertexB, vertexE);
-          digraph.addEdges({ from: vertexF.id, to: vertexA.id });
-          digraph.addEdges({ from: vertexB.id, to: vertexA.id });
-          digraph.addEdges({ from: vertexD.id, to: vertexA.id });
-          digraph.addEdges({ from: vertexC.id, to: vertexB.id });
-          digraph.addEdges({ from: vertexE.id, to: vertexD.id });
-
-          // cycle
-          digraph.addEdges({ from: vertexC.id, to: vertexF.id });
-          digraph.addEdges({ from: vertexF.id, to: vertexC.id });
-
-          expect([...digraph.getDeepParentIds(vertexA.id)]).deep.equal(['f', 'c', 'd', 'e', 'b']);
-        });
+        expect(Array.from(digraph.getAncestors(vertexB.id))).to.deep.equal([vertexA, vertexC]);
       });
     });
 
@@ -294,403 +374,41 @@ describe('Directed Graph Implementation', () => {
         digraph.addVertices(vertexA, vertexB, vertexC, vertexD);
         digraph.addEdges({ from: vertexB.id, to: vertexA.id });
 
-        expect(digraph.getChildren(vertexB.id)).deep.equal([vertexA]);
+        expect(Array.from(digraph.getDescendants(vertexB.id))).deep.equal([vertexA]);
 
         digraph.addEdges({ from: vertexD.id, to: vertexA.id });
         digraph.addEdges({ from: vertexD.id, to: vertexC.id });
 
-        expect(digraph.getChildren(vertexD.id)).deep.equal([vertexA, vertexC]);
-      });
-
-      it('should deeply find and collect all dependencies', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
-        const [vertexA, vertexB, vertexC, vertexD, vertexE, vertexF] = [
-          ...createRawVertices('a', 'b', 'c', 'd', 'e', 'f', 'g')
-        ];
-
-        digraph.addVertices(vertexA, vertexB, vertexC, vertexD, vertexE, vertexF);
-        digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-        digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-        digraph.addEdges({ from: vertexA.id, to: vertexD.id });
-        digraph.addEdges({ from: vertexD.id, to: vertexE.id });
-        digraph.addEdges({ from: vertexE.id, to: vertexF.id });
-
-        expect([...digraph.getDeepChildrenIds(vertexA.id)]).deep.equal(['b', 'c', 'd', 'e', 'f']);
-      });
-
-      describe('When there are cycles in the graph', () => {
-        it('scenario n°1: should explore all vertices anyway', () => {
-          const digraph = new DiGraph<Vertex, Edge>();
-          const [vertexA, vertexB, vertexC, vertexD, vertexE, vertexF] = [
-            ...createRawVertices('a', 'b', 'c', 'd', 'e', 'f')
-          ];
-
-          digraph.addVertices(vertexA, vertexB, vertexC, vertexD, vertexE, vertexF);
-          digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-          digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-          digraph.addEdges({ from: vertexA.id, to: vertexD.id });
-          digraph.addEdges({ from: vertexD.id, to: vertexE.id });
-
-          // cycle deep in the graph
-          digraph.addEdges({ from: vertexE.id, to: vertexF.id });
-          digraph.addEdges({ from: vertexF.id, to: vertexE.id });
-
-          expect([...digraph.getDeepChildrenIds(vertexA.id)]).deep.equal(['b', 'c', 'd', 'e', 'f']);
-        });
-
-        it('scenario n°2: should explore all vertices anyway', () => {
-          const digraph = new DiGraph<Vertex, Edge>();
-          const [vertexA, vertexB, vertexC, vertexD, vertexE, vertexF] = [
-            ...createRawVertices('a', 'b', 'c', 'd', 'e', 'f')
-          ];
-
-          digraph.addVertices(vertexA, vertexB, vertexC, vertexD, vertexE, vertexF);
-          digraph.addEdges({ from: vertexA.id, to: vertexF.id });
-          digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-          digraph.addEdges({ from: vertexA.id, to: vertexD.id });
-          digraph.addEdges({ from: vertexD.id, to: vertexE.id });
-          digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-
-          // cycle deep in the graph
-          digraph.addEdges({ from: vertexC.id, to: vertexF.id });
-          digraph.addEdges({ from: vertexF.id, to: vertexC.id });
-
-          expect([...digraph.getDeepChildrenIds(vertexA.id)]).deep.equal(['f', 'c', 'b', 'd', 'e']);
-        });
+        expect(Array.from(digraph.getDescendants(vertexD.id))).deep.equal([vertexA, vertexC]);
       });
     });
   });
 
-  describe('When search for circular dependencies in the graph', () => {
-    describe('When no vertices have edges directly pointing to each other', () => {
-      it('should not detect a cycle', () => {
-        const digraph = new DiGraph<Vertex, Edge>();
-        const [vertexA, vertexB, vertexC] = [...createRawVertices('a', 'b', 'c')];
+  describe('When constructing DiGraph instances from a raw record', () => {
+    it('should construct a DiGraph instance with vertices linked by edges', () => {
+      const rawGraph: DiGraphDict<Vertex, Edge> = {
+        vertices: {
+          a: {
+            someProperty: 'someValue'
+          },
+          b: {
+            dependencies: []
+          },
+          c: {}
+        },
+        edges: {
+          b: {
+            a: undefined as never
+          },
+          c: {
+            b: undefined as never
+          }
+        }
+      };
 
-        digraph.addVertices(vertexA, vertexB, vertexC);
+      const digraph = DiGraph.fromDict(rawGraph);
 
-        digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-        expect(digraph.hasCycles()).to.equal(false);
-
-        digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-        expect(digraph.hasCycles()).to.equal(false);
-      });
-    });
-
-    describe('When there is only one cycle in the graph', () => {
-      describe('When the cycle is starting from the root vertex', () => {
-        describe('When using infinite depth limit for detection', () => {
-          it('should detect a cycle of depth 1 between vertices with edges pointing directly to each other', () => {
-            const digraph = new DiGraph<Vertex, Edge>();
-            const [vertexA, vertexB] = [...createRawVertices('a', 'b')];
-
-            digraph.addVertices(vertexB, vertexA);
-            digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-
-            expect(digraph.hasCycles()).to.equal(false);
-
-            digraph.addEdges({ from: vertexB.id, to: vertexA.id });
-
-            expect(digraph.hasCycles()).to.equal(true);
-            expect(digraph.findCycles()).to.deep.equal([['b', 'a']]);
-          });
-
-          it('should detect a cycle of depth 2 with indirect edges pointing to each other', () => {
-            const digraph = new DiGraph<Vertex, Edge>();
-            const [vertexA, vertexB, vertexC, vertexD, vertexE] = [
-              ...createRawVertices('a', 'b', 'c', 'd', 'e')
-            ];
-
-            digraph.addVertices(vertexA, vertexB, vertexC, vertexD, vertexE);
-            digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-            digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-            digraph.addEdges({ from: vertexC.id, to: vertexD.id });
-            expect(digraph.hasCycles()).to.equal(false);
-
-            // D ----> A => cycle between A and D traversing B, C
-            digraph.addEdges({ from: vertexD.id, to: vertexA.id });
-            expect(digraph.hasCycles()).to.equal(true);
-            expect(digraph.findCycles()).to.deep.equal([['a', 'b', 'c', 'd']]);
-          });
-
-          it('should detect cyclic paths of any given depth', () => {
-            const digraph = new DiGraph<Vertex, Edge>();
-            const [vertexA, vertexB, vertexC, vertexD] = [...createRawVertices('a', 'b', 'c', 'd')];
-
-            digraph.addVertices(vertexA, vertexB, vertexC, vertexD);
-            digraph.addEdges({ from: vertexC.id, to: vertexD.id });
-            digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-            digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-            // D ----> A => cycle between A and D traversing B, C
-            digraph.addEdges({ from: vertexD.id, to: vertexA.id });
-
-            expect(digraph.findCycles()).to.deep.equal([['a', 'b', 'c', 'd']]);
-          });
-
-          it('should keep only one occurrence of a same cyclic path', () => {
-            const digraph = new DiGraph<Vertex, Edge>();
-
-            const [fileA, fileB, fileC] = [...createRawVertices('A.js', 'B.js', 'C.js')];
-
-            digraph.addVertices(fileA, fileB, fileC);
-            digraph.addEdges({ from: fileA.id, to: fileB.id });
-            digraph.addEdges({ from: fileB.id, to: fileC.id });
-            digraph.addEdges({ from: fileC.id, to: fileA.id });
-
-            expect(digraph.findCycles().length).to.equal(1);
-            expect(digraph.findCycles()).to.deep.equal([['A.js', 'B.js', 'C.js']]);
-          });
-
-          it('should only return nodes involved in the cycle when dealing with direct circular dependency', () => {
-            const digraph = new DiGraph<Vertex, Edge>();
-            const [vertexA, vertexB, vertexC] = [...createRawVertices('a', 'b', 'c')];
-
-            digraph.addVertices(vertexC, vertexA, vertexB);
-            digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-            digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-            expect(digraph.hasCycles()).to.equal(false);
-
-            digraph.addEdges({ from: vertexB.id, to: vertexA.id });
-
-            const cycles = digraph.findCycles();
-            expect(cycles).to.deep.equal([['a', 'b']]);
-          });
-
-          describe('When dealing with an indirect circular dependency', () => {
-            it('scenario n°1: should only keep nodes involved in the cycle', () => {
-              const digraph = new DiGraph<Vertex, Edge>();
-              const [vertexA, vertexB, vertexC, vertexD, vertexE] = [
-                ...createRawVertices('a', 'b', 'c', 'd', 'e')
-              ];
-
-              digraph.addVertices(vertexA, vertexB, vertexC, vertexD, vertexE);
-              digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-              digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-              digraph.addEdges({ from: vertexB.id, to: vertexD.id });
-              expect(digraph.hasCycles()).to.equal(false);
-
-              digraph.addEdges({ from: vertexC.id, to: vertexA.id });
-              digraph.addEdges({ from: vertexC.id, to: vertexE.id });
-
-              const cycles = digraph.findCycles();
-              expect(digraph.hasCycles()).to.equal(true);
-              expect(cycles).to.deep.equal([['a', 'b', 'c']]);
-            });
-
-            it('scenario n°2: should only keep nodes involved in the cycle', () => {
-              const digraph = new DiGraph<Vertex, Edge>();
-              const [vertexA, vertexB, vertexC, vertexD, vertexE, vertexZ] = [
-                ...createRawVertices('a', 'b', 'c', 'd', 'e', 'z')
-              ];
-
-              digraph.addVertices(vertexA, vertexB, vertexC, vertexD, vertexE, vertexZ);
-
-              digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-              digraph.addEdges({ from: vertexA.id, to: vertexC.id });
-              digraph.addEdges({ from: vertexB.id, to: vertexD.id });
-              digraph.addEdges({ from: vertexB.id, to: vertexE.id });
-              digraph.addEdges({ from: vertexD.id, to: vertexZ.id });
-              digraph.addEdges({ from: vertexE.id, to: vertexA.id });
-
-              expect(digraph.findCycles()).to.deep.equal([['a', 'b', 'e']]);
-            });
-          });
-        });
-
-        describe('When providing a max depth limit for detection', () => {
-          it('should not detect any cycle as the specified depth is zero', () => {
-            const digraph = new DiGraph<Vertex, Edge>();
-            const [vertexA, vertexB] = [...createRawVertices('a', 'b')];
-
-            digraph.addVertices(vertexA, vertexB);
-            digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-            digraph.addEdges({ from: vertexB.id, to: vertexA.id });
-            expect(digraph.hasCycles({ maxDepth: 0 })).to.equal(false);
-          });
-
-          it('should detect the cycle once the specified depth is greather than or equal to the depth of the cycle', () => {
-            const digraph = new DiGraph<Vertex, Edge>();
-            const [vertexA, vertexB, vertexC, vertexD] = [
-              ...createRawVertices('a', 'b', 'c', 'd', 'e')
-            ];
-
-            digraph.addVertices(vertexA, vertexB, vertexC, vertexD);
-            digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-            digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-            digraph.addEdges({ from: vertexC.id, to: vertexD.id });
-            expect(digraph.hasCycles()).to.equal(false);
-
-            digraph.addEdges({ from: vertexD.id, to: vertexA.id });
-            expect(digraph.hasCycles({ maxDepth: 0 })).to.equal(false);
-            expect(digraph.hasCycles({ maxDepth: 1 })).to.equal(false);
-            expect(digraph.hasCycles({ maxDepth: 2 })).to.equal(false);
-            expect(digraph.hasCycles({ maxDepth: 3 })).to.equal(false);
-            expect(digraph.hasCycles({ maxDepth: 4 })).to.equal(true);
-            expect(digraph.hasCycles({ maxDepth: 20 })).to.equal(true);
-          });
-        });
-      });
-    });
-
-    describe('When there are many circular dependencies in the graph', () => {
-      describe('When any cycle is starting other than from the root vertex', () => {
-        describe('When only one direct cycle should be detected', () => {
-          it('scenario n°1: should only keep vertices involved', () => {
-            const digraph = new DiGraph<Vertex, Edge>();
-            const [vertexA, vertexB, vertexC, vertexD, vertexE] = [
-              ...createRawVertices('a', 'b', 'c', 'd', 'e')
-            ];
-
-            digraph.addVertices(vertexA, vertexB, vertexC, vertexD, vertexE);
-
-            // root node as it was added first in the graph
-            digraph.addEdges({ from: vertexA.id, to: vertexE.id });
-
-            // other vertices that should not be included in the cycle
-            digraph.addEdges({ from: vertexC.id, to: vertexA.id });
-            digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-
-            // cycle here (C <-> D)
-            digraph.addEdges({ from: vertexC.id, to: vertexD.id });
-            digraph.addEdges({ from: vertexD.id, to: vertexC.id });
-
-            const cycles = digraph.findCycles();
-            expect(digraph.hasCycles()).to.equal(true);
-            expect(cycles).to.deep.equal([['c', 'd']]);
-          });
-
-          it('scenario n°2: should only keep vertices involved', () => {
-            const digraph = new DiGraph<Vertex, Edge>();
-            const [vertexA, vertexB, vertexC, vertexD, vertexE, vertexF] = [
-              ...createRawVertices('a', 'b', 'c', 'd', 'e', 'f')
-            ];
-
-            digraph.addVertices(vertexF, vertexC, vertexD, vertexA, vertexB, vertexE);
-            digraph.addEdges({ from: vertexF.id, to: vertexA.id });
-            digraph.addEdges({ from: vertexB.id, to: vertexA.id });
-            digraph.addEdges({ from: vertexD.id, to: vertexA.id });
-            digraph.addEdges({ from: vertexC.id, to: vertexB.id });
-            digraph.addEdges({ from: vertexE.id, to: vertexD.id });
-
-            // cycle C <-> F
-            digraph.addEdges({ from: vertexC.id, to: vertexF.id });
-            digraph.addEdges({ from: vertexF.id, to: vertexC.id });
-
-            const cycles = digraph.findCycles();
-            expect(digraph.hasCycles()).to.equal(true);
-            expect(cycles).to.deep.equal([['f', 'c']]);
-          });
-
-          it('scenario n°3: should only keep vertices involved', () => {
-            const digraph = new DiGraph<Vertex, Edge>();
-            const [vertexA, vertexB, vertexP, vertexD, vertexX] = [
-              ...createRawVertices('a', 'b', 'p', 'd', 'x')
-            ];
-
-            digraph.addVertices(vertexA, vertexB, vertexP, vertexD, vertexX);
-
-            digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-            digraph.addEdges({ from: vertexA.id, to: vertexP.id });
-            digraph.addEdges({ from: vertexB.id, to: vertexD.id });
-            digraph.addEdges({ from: vertexP.id, to: vertexD.id });
-            digraph.addEdges({ from: vertexD.id, to: vertexX.id });
-            expect(digraph.hasCycles()).to.equal(false);
-
-            digraph.addEdges({ from: vertexX.id, to: vertexA.id });
-            expect(digraph.findCycles()).to.deep.equal([
-              ['a', 'b', 'd', 'x'],
-              ['a', 'p', 'd', 'x']
-            ]);
-          });
-        });
-
-        it('should keep two connected cycles separated', () => {
-          const digraph = new DiGraph<Vertex, Edge>();
-          const [vertexA, vertexB, vertexC, vertexD] = [...createRawVertices('a', 'b', 'c', 'd')];
-
-          digraph.addVertices(vertexA, vertexB, vertexC, vertexD);
-
-          // first cycle (A -> B -> C -> A)
-          digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-          digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-          digraph.addEdges({ from: vertexC.id, to: vertexA.id });
-
-          // second cycle (C <-> D)
-          digraph.addEdges({ from: vertexC.id, to: vertexD.id });
-          digraph.addEdges({ from: vertexD.id, to: vertexC.id });
-
-          // third and global cycle formed (A -> B -> C -> D)
-          // but we want to keep both cycles separated to facilitate the cycle
-          // resolution
-          const cycles = digraph.findCycles();
-          expect(digraph.hasCycles()).to.equal(true);
-          expect(cycles).to.deep.equal([
-            ['a', 'b', 'c'],
-            ['c', 'd']
-          ]);
-        });
-
-        it('should detect both independent cycles', () => {
-          const digraph = new DiGraph<Vertex, Edge>();
-          const [vertexA, vertexB, vertexC, vertexD, vertexE] = [
-            ...createRawVertices('a', 'b', 'c', 'd', 'e')
-          ];
-
-          digraph.addVertices(vertexA, vertexB, vertexC, vertexD, vertexE);
-
-          digraph.addEdges({ from: vertexA.id, to: vertexB.id });
-          digraph.addEdges({ from: vertexA.id, to: vertexD.id });
-
-          // first cycle (B <-> C)
-          digraph.addEdges({ from: vertexC.id, to: vertexB.id });
-          digraph.addEdges({ from: vertexB.id, to: vertexC.id });
-
-          // second cycle (D <-> E)
-          digraph.addEdges({ from: vertexE.id, to: vertexD.id });
-          digraph.addEdges({ from: vertexD.id, to: vertexE.id });
-
-          const cycles = digraph.findCycles();
-          expect(digraph.hasCycles()).to.equal(true);
-          expect(cycles).to.deep.equal([
-            ['b', 'c'],
-            ['d', 'e']
-          ]);
-        });
-      });
+      expect(digraph.toDict()).to.deep.equal(rawGraph);
     });
   });
-
-  // describe('When constructing DiGraph instances from a raw record', () => {
-  //   it('should construct a DiGraph instance with vertices linked by edges', () => {
-  //     const rawGraph = {
-  //       a: {
-  //         id: 'a',
-  //         adjacentTo: [],
-  //         body: {
-  //           someProperty: 'someValue'
-  //         }
-  //       },
-  //       b: {
-  //         id: 'b',
-  //         adjacentTo: ['a'],
-  //         body: {
-  //           dependencies: []
-  //         }
-  //       },
-  //       c: {
-  //         id: 'c',
-  //         adjacentTo: ['b'],
-  //         body: {}
-  //       }
-  //     };
-
-  //     const digraph = TDiGraph.fromRaw(rawGraph);
-
-  //     expect(digraph.toDict()).to.deep.equal({
-  //       a: { id: 'a', adjacentTo: [], body: { someProperty: 'someValue' } },
-  //       b: { id: 'b', adjacentTo: ['a'], body: { dependencies: [] } },
-  //       c: { id: 'c', adjacentTo: ['b'], body: {} }
-  //     });
-  //   });
-  // });
 });
