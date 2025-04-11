@@ -43,15 +43,7 @@ export class GraphTraversal<Vertex, Edge> extends BaseGraphTraversal<Vertex, Edg
     const isDFS = this.strategy === 'DFS';
     const visited = options?.visited ?? new Set<string>();
 
-    if (!startVertexId) {
-      const vertices = Array.from(this.graph.getVertexIds()).reverse();
-      queue.push(...vertices.map((id) => ({ vertex: id, depth: 0 })));
-    } else {
-      if (!this.graph.hasVertex(startVertexId)) {
-        throw new Error(`Vertex does not exist in the graph: ${startVertexId}`);
-      }
-      queue.push({ vertex: startVertexId, depth: 0 });
-    }
+    this.initializeQueue(queue, startVertexId);
 
     while (queue.length > 0) {
       const { vertex, depth } = queue.pop()!;
@@ -64,20 +56,42 @@ export class GraphTraversal<Vertex, Edge> extends BaseGraphTraversal<Vertex, Edg
       yield vertex;
 
       if (depth < depthLimit) {
-        const descendants = Array.from(this.graph.getDescendantIds(vertex))
-          .filter((id) => !visited.has(id))
-          .reverse()
-          .map((id) => ({ vertex: id, depth: depth + 1 }));
-        if (descendants.length === 0) {
-          continue;
-        }
-        if (isDFS) {
-          // Reverse the order, so the first descendant is processed first
-          queue.push(...descendants);
-        } else {
-          queue.unshift(...descendants);
-        }
+        this.addDescendantsToQueue(queue, vertex, depth, visited, isDFS);
       }
+    }
+  }
+
+  private initializeQueue(
+    queue: { vertex: string; depth: number }[],
+    startVertexId?: string
+  ): void {
+    if (!startVertexId) {
+      const vertices = Array.from(this.graph.getVertexIds()).reverse();
+      queue.push(...vertices.map((id) => ({ vertex: id, depth: 0 })));
+    } else {
+      if (!this.graph.hasVertex(startVertexId)) {
+        throw new Error(`Vertex does not exist in the graph: ${startVertexId}`);
+      }
+      queue.push({ vertex: startVertexId, depth: 0 });
+    }
+  }
+
+  private addDescendantsToQueue(
+    queue: { vertex: string; depth: number }[],
+    vertex: string,
+    depth: number,
+    visited: Set<string>,
+    isDFS: boolean
+  ): void {
+    const descendants = Array.from(this.graph.getDescendantIds(vertex))
+      .filter((id) => !visited.has(id))
+      .reverse()
+      .map((id) => ({ vertex: id, depth: depth + 1 }));
+
+    if (isDFS) {
+      queue.push(...descendants);
+    } else {
+      queue.unshift(...descendants);
     }
   }
 }
