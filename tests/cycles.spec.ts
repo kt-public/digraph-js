@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { DiGraph, DiGraphDict, VertexWithId } from '../src';
-import { CyclesJohnson, CyclesSimple } from '../src/cycles';
+import { CyclesDFS, CyclesJohnson } from '../src/cycles';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Vertex = Record<string, any>;
@@ -56,7 +56,7 @@ describe('Graph cycles', () => {
         }
       };
       const graph = DiGraph.fromDict(dict);
-      const cycles = new CyclesSimple(graph);
+      const cycles = new CyclesDFS(graph);
       expect(cycles.hasCycles(1)).to.equal(false);
       expect(cycles.hasCycles(2)).to.equal(true);
       const foundCycles = Array.from(cycles.findCycles(2));
@@ -240,7 +240,7 @@ describe('Graph cycles', () => {
         describe('When providing a max depth limit for detection', () => {
           it('should not detect any cycle as the specified depth is zero', () => {
             const digraph = new DiGraph<Vertex>();
-            const cycles = new CyclesSimple(digraph);
+            const cycles = new CyclesDFS(digraph);
             const [vertexA, vertexB] = [...createRawVertices('a', 'b')];
 
             digraph.addVertices(vertexA, vertexB);
@@ -251,7 +251,7 @@ describe('Graph cycles', () => {
 
           it('should detect the cycle once the specified depth is greather than or equal to the depth of the cycle', () => {
             const digraph = new DiGraph<Vertex>();
-            const cycles = new CyclesSimple(digraph);
+            const cycles = new CyclesDFS(digraph);
             const cyclesJohnson = new CyclesJohnson(digraph);
             const [vertexA, vertexB, vertexC, vertexD] = [
               ...createRawVertices('a', 'b', 'c', 'd', 'e')

@@ -14,45 +14,45 @@ abstract class CyclesBase<Vertex, Edge> implements ICycles<Vertex, Edge> {
     throw new Error('Method not implemented.');
   }
 }
-export class CyclesSimple<Vertex, Edge> extends CyclesBase<Vertex, Edge> {
+export class CyclesDFS<Vertex, Edge> extends CyclesBase<Vertex, Edge> {
   *findCycles(depthLimit: number = Number.POSITIVE_INFINITY): Generator<string[]> {
+    const visited = new Set<string>();
     const stack: string[] = [];
-    const onStack = new Set<string>();
-    const cycleKeys = new Set<string>();
+    const stackSet = new Set<string>();
     const thisGraph = this.graph;
+    const cycleKeys = new Set<string>();
 
-    function* dfs(node: string, depth: number, path: Set<string>): Generator<string[]> {
+    function* dfs(vertex: string, depth: number): Generator<string[]> {
       if (depth + 1 > depthLimit) return;
 
-      stack.push(node);
-      onStack.add(node);
-      path.add(node);
+      visited.add(vertex);
+      stack.push(vertex);
+      stackSet.add(vertex);
 
-      for (const neighbor of thisGraph.getDescendantIds(node)) {
-        if (!path.has(neighbor)) {
-          // Explore the neighbor
-          yield* dfs(neighbor, depth + 1, new Set(path));
-        } else if (onStack.has(neighbor)) {
+      for (const neighbor of thisGraph.getDescendantIds(vertex)) {
+        if (stackSet.has(neighbor)) {
           // Cycle detected
           const cycleStartIndex = stack.indexOf(neighbor);
           const cycle = stack.slice(cycleStartIndex);
-          // cycle.push(neighbor); // Close the cycle
           const cycleKey = [...cycle].sort((a, b) => a.localeCompare(b)).join(',');
           if (!cycleKeys.has(cycleKey)) {
             cycleKeys.add(cycleKey);
+            // cycle.push(neighbor); // close the cycle
             yield cycle;
-          } else {
-            continue; // Skip duplicate cycles
           }
+        } else if (!visited.has(neighbor)) {
+          yield* dfs(neighbor, depth + 1);
         }
       }
 
       stack.pop();
-      onStack.delete(node);
+      stackSet.delete(vertex);
     }
 
-    for (const vertex of this.graph.getVertexIds()) {
-      yield* dfs(vertex, 0, new Set());
+    for (const vertex of thisGraph.getVertexIds()) {
+      if (!visited.has(vertex)) {
+        yield* dfs(vertex, 0);
+      }
     }
   }
 }
