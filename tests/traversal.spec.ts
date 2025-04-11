@@ -4,7 +4,6 @@ import { AncestorTraversal, DescendantTraversal, GraphTraversal } from '../src/t
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Vertex = Record<string, any>;
-type Edge = never;
 
 function* createRawVertices(...ids: string[]): Generator<VertexWithId<Vertex>> {
   for (const id of ids) {
@@ -18,7 +17,7 @@ function* createRawVertices(...ids: string[]): Generator<VertexWithId<Vertex>> {
 describe('Graph traversal', () => {
   describe('When providing a root vertex', () => {
     it('Should fail when the provided vertex does not exist', () => {
-      const graph = new DiGraph<Vertex, Edge>();
+      const graph = new DiGraph<Vertex>();
       const [vertexA, vertexB, vertexC, vertexD] = [...createRawVertices('a', 'b', 'c', 'd')];
       graph.addVertices(vertexA, vertexB, vertexC, vertexD);
       const bfs = GraphTraversal.bfs(graph);
@@ -31,7 +30,7 @@ describe('Graph traversal', () => {
       );
     });
     it('Should traverse the graph in BFS order', () => {
-      const graph = new DiGraph<Vertex, Edge>();
+      const graph = new DiGraph<Vertex>();
       const vertices = [...createRawVertices('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')];
       graph.addVertices(...vertices);
       graph.addEdges({ from: '1', to: '2' });
@@ -79,7 +78,7 @@ describe('Graph traversal', () => {
       ]);
     });
     it('Should traverse the graph in DFS order', () => {
-      const graph = new DiGraph<Vertex, Edge>();
+      const graph = new DiGraph<Vertex>();
       const vertices = [...createRawVertices('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')];
       graph.addVertices(...vertices);
       graph.addEdges({ from: '1', to: '2' });
@@ -129,7 +128,7 @@ describe('Graph traversal', () => {
   });
   describe('When not providing a root vertex', () => {
     it('Should traverse the graph in BFS order', () => {
-      const graph = new DiGraph<Vertex, Edge>();
+      const graph = new DiGraph<Vertex>();
       const vertices = [...createRawVertices('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')];
       graph.addVertices(...vertices);
       graph.addEdges({ from: '1', to: '2' });
@@ -158,7 +157,7 @@ describe('Graph traversal', () => {
       ]);
     });
     it('Should traverse the graph in DFS order', () => {
-      const graph = new DiGraph<Vertex, Edge>();
+      const graph = new DiGraph<Vertex>();
       const vertices = [...createRawVertices('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')];
       graph.addVertices(...vertices);
       graph.addEdges({ from: '1', to: '2' });
@@ -189,7 +188,7 @@ describe('Graph traversal', () => {
   });
   describe('When traversing descendants', () => {
     it('Should traverse the graph children (in BFS order)', () => {
-      const graph = new DiGraph<Vertex, Edge>();
+      const graph = new DiGraph<Vertex>();
       const vertices = [...createRawVertices('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')];
       graph.addVertices(...vertices);
       graph.addEdges({ from: '1', to: '2' });
@@ -216,7 +215,7 @@ describe('Graph traversal', () => {
   });
   describe('When traversing ancestors', () => {
     it('Should traverse the graph ancestors (in BFS order)', () => {
-      const graph = new DiGraph<Vertex, Edge>();
+      const graph = new DiGraph<Vertex>();
       const vertices = [...createRawVertices('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')];
       graph.addVertices(...vertices);
       graph.addEdges({ from: '1', to: '2' });
