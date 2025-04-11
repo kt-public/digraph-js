@@ -20,7 +20,7 @@
     "dependencies",
     "lightweight"
   ],
-  "homepage": "https://github.com/kt-public/ya-digraph-js#readme",
+  "homepage": "https://github.com/kt-public/digraph-js#readme",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/kt-public/digraph-js.git"
