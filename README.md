@@ -68,8 +68,7 @@ Functionality for detecting cycles in the graph.
 
 ```ts
 // Classical DFS graph cycle detection, only one cycle (if any) per node is detected, supports depthLimit
-const cycles = new CyclesSimple(graph);
-const cycles = new CyclesSimple(graph);
+const cycles = new CyclesDFS(graph);
 expect(cycles.hasCycles(1)).to.equal(false);
 expect(cycles.hasCycles(2)).to.equal(true);
 const foundCycles = Array.from(cycles.findCycles(2));
