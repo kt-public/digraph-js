@@ -9,7 +9,7 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "daily"
-      time: "03:41" # UTC time
+      time: "03:14" # UTC time
       timezone: "Europe/Berlin"
     ignore:
       - dependency-name: "npm"
