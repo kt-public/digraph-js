@@ -1,6 +1,7 @@
-import { ICycles, IDiGraph } from './interface';
+import { DiGraph } from './digraph';
+import { DiGraphDict, ICycles, IDiGraph } from './interface';
 
-export class Cycles<Vertex, Edge> implements ICycles {
+export class CyclesSimple<Vertex, Edge> implements ICycles {
   constructor(private graph: IDiGraph<Vertex, Edge>) {}
 
   hasCycles(depthLimit?: number): boolean {
@@ -10,39 +11,143 @@ export class Cycles<Vertex, Edge> implements ICycles {
     return false;
   }
   *findCycles(depthLimit: number = Number.POSITIVE_INFINITY): Generator<string[]> {
-    const visited = new Set<string>();
-    const stack = new Set<string>();
-    const path: string[] = [];
+    const stack: string[] = [];
+    const onStack = new Set<string>();
+    const cycleKeys = new Set<string>();
+    const thisGraph = this.graph;
 
-    for (const id of this.graph.getVertexIds()) {
-      if (!visited.has(id)) {
-        yield* this.dfs(id, visited, stack, path, depthLimit);
+    function* dfs(node: string, depth: number, path: Set<string>): Generator<string[]> {
+      if (depth + 1 > depthLimit) return;
+
+      stack.push(node);
+      onStack.add(node);
+      path.add(node);
+
+      for (const neighbor of thisGraph.getDescendantIds(node)) {
+        if (!path.has(neighbor)) {
+          // Explore the neighbor
+          yield* dfs(neighbor, depth + 1, new Set(path));
+        } else if (onStack.has(neighbor)) {
+          // Cycle detected
+          const cycleStartIndex = stack.indexOf(neighbor);
+          const cycle = stack.slice(cycleStartIndex);
+          // cycle.push(neighbor); // Close the cycle
+          const cycleKey = [...cycle].sort().join(',');
+          if (!cycleKeys.has(cycleKey)) {
+            cycleKeys.add(cycleKey);
+            yield cycle;
+          } else {
+            continue; // Skip duplicate cycles
+          }
+        }
       }
+
+      stack.pop();
+      onStack.delete(node);
+    }
+
+    for (const vertex of this.graph.getVertexIds()) {
+      yield* dfs(vertex, 0, new Set());
     }
   }
-  private *dfs(
-    id: string,
-    visited: Set<string>,
-    stack: Set<string>,
-    path: string[],
-    depthLimit: number
-  ): Generator<string[]> {
-    if (path.length > depthLimit) {
-      return;
-    }
-    visited.add(id);
-    stack.add(id);
-    path.push(id);
+}
 
-    for (const childId of this.graph.getDescendantIds(id)) {
-      if (!visited.has(childId)) {
-        yield* this.dfs(childId, visited, stack, path, depthLimit);
-      } else if (stack.has(childId)) {
-        yield [...path, childId];
+export class CyclesJohnson<Vertex, Edge> implements ICycles {
+  constructor(private graph: IDiGraph<Vertex, Edge>) {}
+
+  hasCycles(depthLimit?: number): boolean {
+    for (const cycle of this.findCycles(depthLimit)) {
+      return true;
+    }
+    return false;
+  }
+
+  private cloneSimpleGraph(): IDiGraph<never, never> {
+    const dict = this.graph.toDict();
+    // Adjust dict to remove edges and vertices
+    const simpleDict: DiGraphDict<never, never> = {
+      // this is Record<string, undefined>
+      vertices: Object.fromEntries(
+        Object.entries(dict.vertices).map(([id]) => [id, undefined as never])
+      ),
+      // this is Record<string, Record<string, undefined>>
+      edges: Object.fromEntries(
+        Object.entries(dict.edges).map(([from, edges]) => [
+          from,
+          Object.fromEntries(Object.entries(edges).map(([to]) => [to, undefined as never]))
+        ])
+      )
+    };
+    return DiGraph.fromDict(simpleDict);
+  }
+
+  *findCycles(depthLimit?: number): Generator<string[]> {
+    if (depthLimit !== undefined && depthLimit != Number.POSITIVE_INFINITY) {
+      throw new Error("Depth limit is not supported in Johnson's algorithm");
+    }
+    const blocked = new Set<string>();
+    const blockMap = new Map<string, Set<string>>();
+    const stack: string[] = [];
+    //const cycles: string[][] = [];
+    const thisGraph = this.cloneSimpleGraph();
+
+    function unblock(node: string) {
+      blocked.delete(node);
+      if (blockMap.has(node)) {
+        for (const w of blockMap.get(node)!) {
+          if (blocked.has(w)) {
+            unblock(w);
+          }
+        }
+        blockMap.delete(node);
       }
     }
 
-    stack.delete(id);
-    path.pop();
+    function* circuit(v: string, start: string): Generator<string[]> {
+      let foundCycle = false;
+      stack.push(v);
+      blocked.add(v);
+
+      for (const w of thisGraph.getDescendantIds(v)) {
+        if (w === start) {
+          // Cycle found
+          const cycle = [...stack];
+          // cycle.push(start); // close the cycle
+          yield cycle;
+          foundCycle = true;
+        } else if (!blocked.has(w)) {
+          const subCycles = yield* circuit(w, start);
+          foundCycle = foundCycle || !!subCycles;
+        }
+      }
+
+      if (foundCycle) {
+        unblock(v);
+      } else {
+        for (const w of thisGraph.getDescendantIds(v)) {
+          if (!blockMap.has(w)) {
+            blockMap.set(w, new Set());
+          }
+          blockMap.get(w)!.add(v);
+        }
+      }
+
+      stack.pop();
+      return foundCycle;
+    }
+
+    const vertices = [...thisGraph.getVertexIds()];
+    for (let i = 0; i < vertices.length; i++) {
+      const startVertex = vertices[i];
+      yield* circuit(startVertex, startVertex);
+
+      // Remove processed vertex and its edges
+      thisGraph.deleteVertices(startVertex);
+      blocked.clear();
+      blockMap.clear();
+    }
+
+    // Restore the original graph structure if needed
+    // (depends on whether `removeVertex` modifies the graph permanently)
   }
 }

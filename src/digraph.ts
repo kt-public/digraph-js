@@ -1,41 +1,36 @@
-import { EdgeId, EdgeWithId, IDiGraph, VertexWithId } from './interface';
+import { DiGraphDict, EdgeId, EdgeWithId, IDiGraph, VertexWithId } from './interface';
 
-export type DiGraphDict<Vertex, Edge> = {
-  vertices: Record<string, Vertex>;
-  edges: Record<string, Record<string, Edge>>;
-};
-
-export class DiGraph<Vertex, Edge> implements IDiGraph<Vertex, Edge> {
+export class DiGraph<Vertex = never, Edge = never> implements IDiGraph<Vertex, Edge> {
   public static fromDict<Vertex, Edge>(dict: DiGraphDict<Vertex, Edge>): DiGraph<Vertex, Edge> {
     const graph = new DiGraph<Vertex, Edge>();
     for (const [id, vertex] of Object.entries(dict.vertices)) {
-      graph.addVertices({ id, vertex });
+      graph.addVertices({ id, vertex } as VertexWithId<Vertex>);
     }
     for (const [from, edges] of Object.entries(dict.edges)) {
       for (const [to, edge] of Object.entries(edges)) {
-        graph.addEdges({ from, to, edge });
+        graph.addEdges({ from, to, edge } as EdgeWithId<Edge>);
       }
     }
     return graph;
   }
 
-  public toDict(): DiGraphDict<Vertex, Edge> {
+  toDict(): DiGraphDict<Vertex, Edge> {
     const vertices: Record<string, Vertex> = {};
     const edges: Record<string, Record<string, Edge>> = {};
     for (const [id, vertex] of this.#vertices.entries()) {
-      vertices[id] = vertex;
+      vertices[id] = vertex as Vertex;
     }
     for (const [from, edgesMap] of this.#edges.entries()) {
       edges[from] = {};
       for (const [to, edge] of edgesMap.entries()) {
-        edges[from][to] = edge;
+        edges[from][to] = edge as Edge;
       }
     }
     return { vertices, edges };
   }
 
-  #vertices: Map<string, Vertex> = new Map();
-  #edges: Map<string, Map<string, Edge>> = new Map();
+  #vertices: Map<string, Vertex | undefined> = new Map();
+  #edges: Map<string, Map<string, Edge | undefined>> = new Map();
 
   hasVertex(id: string): boolean {
     return this.#vertices.has(id);
@@ -138,6 +133,16 @@ export class DiGraph<Vertex, Edge> implements IDiGraph<Vertex, Edge> {
         `Self-loops are not allowed: ${selfLoops.map((edge) => `${edge.from}->${edge.to}`).join(', ')}`
       );
     }
+    // Check that the edges do not point to non-existent vertices
+    const nonExistentVertices = edges
+      .map((edge) => [edge.from, edge.to])
+      .flat()
+      .filter((id) => !this.hasVertex(id));
+    if (nonExistentVertices.length > 0) {
+      throw new Error(
+        `Edges point to non-existent vertices: ${nonExistentVertices.map((id) => `${id}`).join(', ')}`
+      );
+    }
     // Check that the edges do not exist in the graph
     this.validateEdgesDoNotExist(...edges.map((edge) => ({ from: edge.from, to: edge.to })));
   }
@@ -189,7 +194,7 @@ export class DiGraph<Vertex, Edge> implements IDiGraph<Vertex, Edge> {
   }
   *getDescendants(vertexId: string): Generator<VertexWithId<Vertex>> {
     for (const childId of this.getDescendantIds(vertexId)) {
-      yield { id: childId, vertex: this.getVertex(childId)! as Vertex };
+      yield { id: childId, vertex: this.getVertex(childId) } as VertexWithId<Vertex>;
     }
   }
   *getAncestorIds(id: string): Generator<string> {
@@ -202,7 +207,7 @@ export class DiGraph<Vertex, Edge> implements IDiGraph<Vertex, Edge> {
   }
   *getAncestors(id: string): Generator<VertexWithId<Vertex>> {
     for (const parentId of this.getAncestorIds(id)) {
-      yield { id: parentId, vertex: this.getVertex(parentId)! as Vertex };
+      yield { id: parentId, vertex: this.getVertex(parentId) } as VertexWithId<Vertex>;
     }
   }
 }

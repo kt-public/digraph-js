@@ -2,7 +2,9 @@ type VertexId = {
   id: string;
 };
 export type VertexWithId<Vertex> = [Vertex] extends [never]
-  ? VertexId
+  ? VertexId & {
+      vertex?: never;
+    }
   : VertexId & {
       vertex: Vertex;
     };
@@ -11,10 +13,17 @@ export type EdgeId = {
   to: string;
 };
 export type EdgeWithId<Edge> = [Edge] extends [never]
-  ? EdgeId
+  ? EdgeId & {
+      edge?: never;
+    }
   : EdgeId & {
       edge: Edge;
     };
+
+export type DiGraphDict<Vertex, Edge> = {
+  vertices: Record<string, Vertex>;
+  edges: Record<string, Record<string, Edge>>;
+};
 
 export interface IDiGraph<Vertex, Edge> {
   // Vertex operations
@@ -39,11 +48,19 @@ export interface IDiGraph<Vertex, Edge> {
   // Ancestors
   getAncestorIds(id: string): Generator<string>;
   getAncestors(id: string): Generator<VertexWithId<Vertex>>;
+
+  // Serialization
+  toDict(): DiGraphDict<Vertex, Edge>;
 }
 
+export type TraverseOptions = {
+  startVertexId?: string;
+  depthLimit?: number;
+  visited?: Set<string>;
+};
 export interface ITraversal<Vertex> {
-  traverseIds(): Generator<string>;
-  traverse(): Generator<VertexWithId<Vertex>>;
+  traverseIds(options?: TraverseOptions): Generator<string>;
+  traverse(options?: TraverseOptions): Generator<VertexWithId<Vertex>>;
 }
 
 export interface ICycles {

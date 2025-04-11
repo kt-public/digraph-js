@@ -1,13 +1,14 @@
-import { IDiGraph, ITraversal, VertexWithId } from './interface';
+import { IDiGraph, ITraversal, TraverseOptions, VertexWithId } from './interface';
 
 export abstract class BaseGraphTraversal<Vertex, Edge> implements ITraversal<Vertex> {
   constructor(protected graph: IDiGraph<Vertex, Edge>) {}
-  traverseIds(): Generator<string> {
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  traverseIds(options?: TraverseOptions): Generator<string> {
     throw new Error('Method not implemented.');
   }
-  *traverse(): Generator<VertexWithId<Vertex>> {
-    for (const id of this.traverseIds()) {
-      yield { id, vertex: this.graph.getVertex(id)! };
+  *traverse(options?: TraverseOptions): Generator<VertexWithId<Vertex>> {
+    for (const id of this.traverseIds(options)) {
+      yield { id, vertex: this.graph.getVertex(id) } as VertexWithId<Vertex>;
     }
   }
 }
@@ -15,55 +16,45 @@ export abstract class BaseGraphTraversal<Vertex, Edge> implements ITraversal<Ver
 export class GraphTraversal<Vertex, Edge> extends BaseGraphTraversal<Vertex, Edge> {
   static create<Vertex, Edge>(
     graph: IDiGraph<Vertex, Edge>,
-    startVertexId?: string,
-    depthLimit?: number,
-    strategy?: 'DFS' | 'BFS'
+    strategy: 'DFS' | 'BFS'
   ): ITraversal<Vertex> {
-    return new GraphTraversal<Vertex, Edge>(graph, startVertexId, depthLimit, strategy);
+    return new GraphTraversal<Vertex, Edge>(graph, strategy);
   }
 
-  static bfs<Vertex, Edge>(
-    graph: IDiGraph<Vertex, Edge>,
-    startVertexId?: string,
-    depthLimit?: number
-  ): ITraversal<Vertex> {
-    return this.create(graph, startVertexId, depthLimit, 'BFS');
+  static bfs<Vertex, Edge>(graph: IDiGraph<Vertex, Edge>): ITraversal<Vertex> {
+    return this.create(graph, 'BFS');
   }
 
-  static dfs<Vertex, Edge>(
-    graph: IDiGraph<Vertex, Edge>,
-    startVertexId?: string,
-    depthLimit?: number
-  ): ITraversal<Vertex> {
-    return this.create(graph, startVertexId, depthLimit, 'DFS');
+  static dfs<Vertex, Edge>(graph: IDiGraph<Vertex, Edge>): ITraversal<Vertex> {
+    return this.create(graph, 'DFS');
   }
 
   constructor(
     protected graph: IDiGraph<Vertex, Edge>,
-    protected startVertexId?: string,
-    protected depthLimit: number = Number.POSITIVE_INFINITY,
-    protected strategy: 'DFS' | 'BFS' = 'DFS'
+    protected strategy: 'DFS' | 'BFS'
   ) {
     super(graph);
   }
 
-  *traverseIds(): Generator<string> {
+  *traverseIds(options?: TraverseOptions): Generator<string> {
+    const startVertexId = options?.startVertexId;
+    const depthLimit = options?.depthLimit ?? Number.POSITIVE_INFINITY;
     const queue: { vertex: string; depth: number }[] = [];
     const isDFS = this.strategy === 'DFS';
+    const visited = options?.visited ?? new Set<string>();
 
-    if (!this.startVertexId) {
-      const vertices = this.graph.getVertexIds();
-      for (const vertex of vertices) {
-        queue.push({ vertex, depth: 0 });
-      }
+    if (!startVertexId) {
+      const vertices = Array.from(this.graph.getVertexIds()).reverse();
+      queue.push(...vertices.map((id) => ({ vertex: id, depth: 0 })));
     } else {
-      queue.push({ vertex: this.startVertexId, depth: 0 });
+      if (!this.graph.hasVertex(startVertexId)) {
+        throw new Error(`Vertex does not exist in the graph: ${startVertexId}`);
+      }
+      queue.push({ vertex: startVertexId, depth: 0 });
     }
 
-    const visited = new Set<string>();
-
     while (queue.length > 0) {
-      const { vertex, depth } = isDFS ? queue.pop()! : queue.shift()!;
+      const { vertex, depth } = queue.pop()!;
 
       if (visited.has(vertex)) {
         continue;
@@ -72,84 +63,104 @@ export class GraphTraversal<Vertex, Edge> extends BaseGraphTraversal<Vertex, Edg
       visited.add(vertex);
       yield vertex;
 
-      if (depth < this.depthLimit) {
-        const descendants = this.graph.getDescendantIds(vertex);
-        for (const neighbor of descendants) {
-          if (!visited.has(neighbor)) {
-            queue.push({ vertex: neighbor, depth: depth + 1 });
-          }
+      if (depth < depthLimit) {
+        const descendants = Array.from(this.graph.getDescendantIds(vertex))
+          .filter((id) => !visited.has(id))
+          .reverse()
+          .map((id) => ({ vertex: id, depth: depth + 1 }));
+        if (descendants.length === 0) {
+          continue;
+        }
+        if (isDFS) {
+          // Reverse the order, so the first descendant is processed first
+          queue.push(...descendants);
+        } else {
+          queue.unshift(...descendants);
         }
       }
     }
   }
 }
 
-export class DescendantTraversal<Vertex, Edge> extends GraphTraversal<Vertex, Edge> {
-  static create<Vertex, Edge>(
-    graph: IDiGraph<Vertex, Edge>,
-    startVertexId: string,
-    depthLimit: number = Number.POSITIVE_INFINITY
-  ): ITraversal<Vertex> {
-    return new DescendantTraversal<Vertex, Edge>(graph, startVertexId, depthLimit);
+export class DescendantTraversal<Vertex, Edge> extends BaseGraphTraversal<Vertex, Edge> {
+  static create<Vertex, Edge>(graph: IDiGraph<Vertex, Edge>): ITraversal<Vertex> {
+    return new DescendantTraversal<Vertex, Edge>(graph);
   }
 
-  static *getDescendantIds<Vertex, Edge>(
+  static *getDeepDescendantIds<Vertex, Edge>(
     graph: IDiGraph<Vertex, Edge>,
     startVertexId: string,
-    depthLimit: number = Number.POSITIVE_INFINITY
+    depthLimit?: number
   ): Generator<string> {
-    yield* this.create(graph, startVertexId, depthLimit).traverseIds();
+    for (const vertexId of this.create(graph).traverseIds({ startVertexId, depthLimit })) {
+      if (vertexId !== startVertexId) {
+        yield vertexId;
+      }
+    }
   }
 
-  static *getDescendants<Vertex, Edge>(
+  static *getDeepDescendants<Vertex, Edge>(
     graph: IDiGraph<Vertex, Edge>,
     startVertexId: string,
-    depthLimit: number = Number.POSITIVE_INFINITY
+    depthLimit?: number
   ): Generator<{ id: string; vertex: Vertex }> {
-    for (const id of this.getDescendantIds(graph, startVertexId, depthLimit)) {
+    for (const id of this.getDeepDescendantIds(graph, startVertexId, depthLimit)) {
       yield { id, vertex: graph.getVertex(id)! };
+    }
+  }
+
+  *traverseIds(options?: TraverseOptions): Generator<string> {
+    if (!options?.startVertexId) {
+      throw new Error('Start vertex ID is required for descendant traversal.');
+    }
+    const bfs = GraphTraversal.bfs(this.graph);
+    for (const id of bfs.traverseIds(options)) {
+      if (id !== options.startVertexId) {
+        yield id;
+      }
     }
   }
 }
 
 export class AncestorTraversal<Vertex, Edge> extends BaseGraphTraversal<Vertex, Edge> {
-  static create<Vertex, Edge>(
-    graph: IDiGraph<Vertex, Edge>,
-    startVertexId: string,
-    depthLimit: number = Number.POSITIVE_INFINITY
-  ): ITraversal<Vertex> {
-    return new AncestorTraversal<Vertex, Edge>(graph, startVertexId, depthLimit);
+  static create<Vertex, Edge>(graph: IDiGraph<Vertex, Edge>): ITraversal<Vertex> {
+    return new AncestorTraversal<Vertex, Edge>(graph);
   }
 
-  static *getAncestorIds<Vertex, Edge>(
+  static *getDeepAncestorIds<Vertex, Edge>(
     graph: IDiGraph<Vertex, Edge>,
     startVertexId: string,
-    depthLimit: number = Number.POSITIVE_INFINITY
+    depthLimit?: number
   ): Generator<string> {
-    yield* this.create(graph, startVertexId, depthLimit).traverseIds();
+    for (const vertexId of this.create(graph).traverseIds({ startVertexId, depthLimit })) {
+      if (vertexId !== startVertexId) {
+        yield vertexId;
+      }
+    }
   }
 
-  static *getAncestors<Vertex, Edge>(
+  static *getDeepAncestors<Vertex, Edge>(
     graph: IDiGraph<Vertex, Edge>,
     startVertexId: string,
-    depthLimit: number = Number.POSITIVE_INFINITY
+    depthLimit?: number
   ): Generator<{ id: string; vertex: Vertex }> {
-    for (const id of this.getAncestorIds(graph, startVertexId, depthLimit)) {
+    for (const id of this.getDeepAncestorIds(graph, startVertexId, depthLimit)) {
       yield { id, vertex: graph.getVertex(id)! };
     }
   }
 
-  constructor(
-    protected graph: IDiGraph<Vertex, Edge>,
-    protected startVertexId: string,
-    protected depthLimit: number = Number.POSITIVE_INFINITY
-  ) {
+  constructor(protected graph: IDiGraph<Vertex, Edge>) {
     super(graph);
   }
 
-  *traverseIds(): Generator<string> {
+  *traverseIds(options?: TraverseOptions): Generator<string> {
+    const startVertexId = options?.startVertexId;
+    const depthLimit = options?.depthLimit ?? Number.POSITIVE_INFINITY;
+    if (!startVertexId) {
+      throw new Error('Start vertex ID is required for ancestor traversal.');
+    }
     const queue: { vertex: string; depth: number }[] = [];
-    queue.push({ vertex: this.startVertexId, depth: 0 });
+    queue.push({ vertex: startVertexId, depth: 0 });
 
     const visited = new Set<string>();
 
@@ -163,7 +174,7 @@ export class AncestorTraversal<Vertex, Edge> extends BaseGraphTraversal<Vertex, 
       visited.add(vertex);
       yield vertex;
 
-      if (depth < this.depthLimit) {
+      if (depth < depthLimit) {
         const ancestors = this.graph.getAncestorIds(vertex);
         for (const ancestor of ancestors) {
           if (!visited.has(ancestor)) {
