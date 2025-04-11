@@ -1,5 +1,11 @@
 # ya-digraph-js
 
+## 0.1.2
+
+### Patch Changes
+
+- 6e4d4bd: Adjust imports, so it won't fail in dependants
+
 ## 0.1.1
 
 ### Patch Changes
