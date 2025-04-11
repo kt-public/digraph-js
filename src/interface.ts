@@ -63,7 +63,8 @@ export interface ITraversal<Vertex> {
   traverse(options?: TraverseOptions): Generator<VertexWithId<Vertex>>;
 }
 
-export interface ICycles {
+export interface ICycles<Vertex, Edge> {
+  readonly graph: IDiGraph<Vertex, Edge>;
   findCycles(depthLimit?: number): Generator<string[]>;
   hasCycles(depthLimit?: number): boolean;
 }

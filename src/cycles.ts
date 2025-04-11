@@ -1,15 +1,24 @@
 import { DiGraph } from './digraph';
 import { DiGraphDict, ICycles, IDiGraph } from './interface';
 
-export class CyclesSimple<Vertex, Edge> implements ICycles {
-  constructor(private graph: IDiGraph<Vertex, Edge>) {}
-
+abstract class CyclesBase<Vertex, Edge> implements ICycles<Vertex, Edge> {
+  constructor(public readonly graph: IDiGraph<Vertex, Edge>) {}
   hasCycles(depthLimit?: number): boolean {
-    for (const cycle of this.findCycles(depthLimit)) {
+    for (const _ of this.findCycles(depthLimit)) {
       return true;
     }
     return false;
   }
+  // eslint-disable-next-line @typescript-eslint/no-unused-vars
+  findCycles(depthLimit?: number): Generator<string[]> {
+    throw new Error('Method not implemented.');
+  }
+}
+export class CyclesSimple<Vertex, Edge> extends CyclesBase<Vertex, Edge> {
+  constructor(graph: IDiGraph<Vertex, Edge>) {
+    super(graph);
+  }
+
   *findCycles(depthLimit: number = Number.POSITIVE_INFINITY): Generator<string[]> {
     const stack: string[] = [];
     const onStack = new Set<string>();
@@ -32,7 +41,7 @@ export class CyclesSimple<Vertex, Edge> implements ICycles {
           const cycleStartIndex = stack.indexOf(neighbor);
           const cycle = stack.slice(cycleStartIndex);
           // cycle.push(neighbor); // Close the cycle
-          const cycleKey = [...cycle].sort().join(',');
+          const cycleKey = [...cycle].sort((a, b) => a.localeCompare(b)).join(',');
           if (!cycleKeys.has(cycleKey)) {
             cycleKeys.add(cycleKey);
             yield cycle;
@@ -52,14 +61,9 @@ export class CyclesSimple<Vertex, Edge> implements ICycles {
   }
 }
 
-export class CyclesJohnson<Vertex, Edge> implements ICycles {
-  constructor(private graph: IDiGraph<Vertex, Edge>) {}
-
-  hasCycles(depthLimit?: number): boolean {
-    for (const cycle of this.findCycles(depthLimit)) {
-      return true;
-    }
-    return false;
+export class CyclesJohnson<Vertex, Edge> extends CyclesBase<Vertex, Edge> {
+  constructor(graph: IDiGraph<Vertex, Edge>) {
+    super(graph);
   }
 
   private cloneSimpleGraph(): IDiGraph<never, never> {
@@ -82,7 +86,7 @@ export class CyclesJohnson<Vertex, Edge> implements ICycles {
   }
 
   *findCycles(depthLimit?: number): Generator<string[]> {
-    if (depthLimit !== undefined && depthLimit != Number.POSITIVE_INFINITY) {
+    if (depthLimit !== undefined) {
       throw new Error("Depth limit is not supported in Johnson's algorithm");
     }
     const blocked = new Set<string>();
