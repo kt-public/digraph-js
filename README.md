@@ -67,7 +67,7 @@ const ancestors = AncestorTraversal.getDeepAncestor(graph, '4');
 Functionality for detecting cycles in the graph.
 
 ```ts
-// Simple graph detection, less performant, supports depthLimit
+// Simple graph detection, less performant, supports depthLimit, suitable only for very small graphs
 const cycles = new CyclesSimple(graph);
 const cycles = new CyclesSimple(graph);
 expect(cycles.hasCycles(1)).to.equal(false);
