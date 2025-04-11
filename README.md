@@ -67,7 +67,7 @@ const ancestors = AncestorTraversal.getDeepAncestor(graph, '4');
 Functionality for detecting cycles in the graph.
 
 ```ts
-// Simple graph detection, less performant, supports depthLimit, suitable only for very small graphs
+// Classical DFS graph cycle detection, only one cycle (if any) per node is detected, supports depthLimit
 const cycles = new CyclesSimple(graph);
 const cycles = new CyclesSimple(graph);
 expect(cycles.hasCycles(1)).to.equal(false);
@@ -76,9 +76,9 @@ const foundCycles = Array.from(cycles.findCycles(2));
 expect(foundCycles).to.deep.equal([['a', 'c']]);
 
 // Johnson's cycle detection, supposedly most performant of existing, does not support depthLimit
+// All elementary cycles are detected, multiple cycles per node possible
 // https://www.cs.tufts.edu/comp/150GA/homeworks/hw1/Johnson%2075.PDF
 // https://epubs.siam.org/doi/10.1137/0205007
-
 const cycles = new CyclesJohnson(digraph);
 digraph.addEdges({ from: vertexD.id, to: vertexA.id });
 expect(cycles.hasCycles()).to.equal(true);
