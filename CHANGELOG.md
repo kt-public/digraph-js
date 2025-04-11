@@ -1,5 +1,13 @@
 # ya-digraph-js
 
+## 0.1.1
+
+### Patch Changes
+
+- f0ad7d5: fix: remove duplicate cycles in the johnson's alg"
+- deb1b48: Update code per sonar report
+- ff01af4: Removed CyclesSimple (too slow), added CyclesDFS - classical DFS cycle detection
+
 ## 0.1.0
 
 ### Minor Changes
