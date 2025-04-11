@@ -46,7 +46,7 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
   // print all cycles
   console.log('Unique cycles: ', uniqueCycles.length);
   // Longest cycle
-  const longestCycle = uniqueCycles.reduce((a, b) => (a.length > b.length ? a : b));
+  const longestCycle = uniqueCycles.reduce((a, b) => (a.length > b.length ? a : b), []);
   console.log('Longest cycle: ', longestCycle.length);
 }
 
@@ -90,7 +90,7 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
   // print all cycles
   console.log('Unique cycles: ', uniqueCycles.length);
   // Longest cycle
-  const longestCycle = uniqueCycles.reduce((a, b) => (a.length > b.length ? a : b));
+  const longestCycle = uniqueCycles.reduce((a, b) => (a.length > b.length ? a : b), []);
   console.log('Longest cycle: ', longestCycle.length);
 }
 
@@ -134,7 +134,7 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
   // print all cycles
   console.log('Unique cycles: ', uniqueCycles.length);
   // Longest cycle
-  const longestCycle = uniqueCycles.reduce((a, b) => (a.length > b.length ? a : b));
+  const longestCycle = uniqueCycles.reduce((a, b) => (a.length > b.length ? a : b), []);
   console.log('Longest cycle: ', longestCycle.length);
 }
 
@@ -178,7 +178,7 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
   // print all cycles
   console.log('Unique cycles: ', uniqueCycles.length);
   // Longest cycle
-  const longestCycle = uniqueCycles.reduce((a, b) => (a.length > b.length ? a : b));
+  const longestCycle = uniqueCycles.reduce((a, b) => (a.length > b.length ? a : b), []);
   console.log('Longest cycle: ', longestCycle.length);
 }
 
@@ -222,7 +222,7 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
   // print all cycles
   console.log('Unique cycles: ', uniqueCycles.length);
   // Longest cycle
-  const longestCycle = uniqueCycles.reduce((a, b) => (a.length > b.length ? a : b));
+  const longestCycle = uniqueCycles.reduce((a, b) => (a.length > b.length ? a : b), []);
   console.log('Longest cycle: ', longestCycle.length);
 }
 
@@ -266,6 +266,6 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
   // print all cycles
   console.log('Unique cycles: ', uniqueCycles.length);
   // Longest cycle
-  const longestCycle = uniqueCycles.reduce((a, b) => (a.length > b.length ? a : b));
+  const longestCycle = uniqueCycles.reduce((a, b) => (a.length > b.length ? a : b), []);
   console.log('Longest cycle: ', longestCycle.length);
 }
