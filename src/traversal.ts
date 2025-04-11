@@ -1,4 +1,4 @@
-import { IDiGraph, ITraversal, TraverseOptions, VertexWithId } from './interface';
+import { IDiGraph, ITraversal, TraverseOptions, VertexWithId } from './interface.js';
 
 export abstract class BaseGraphTraversal<Vertex, Edge> implements ITraversal<Vertex> {
   constructor(protected graph: IDiGraph<Vertex, Edge>) {}
