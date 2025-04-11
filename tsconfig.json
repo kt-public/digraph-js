@@ -1,8 +1,8 @@
 {
   "compilerOptions": {
     "lib": ["es2023"],
-    "target": "es2022",
-    "module": "commonjs",
+    "target": "esnext",
+    "module": "esnext",
     "moduleResolution": "node",
     "allowJs": true,
     "checkJs": true,

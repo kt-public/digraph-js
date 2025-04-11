@@ -1,10 +1,10 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { performance } from 'node:perf_hooks';
-import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/index.js';
-/** @type {import('../../distindex').DiGraph} */
-/** @type {import('../../dist/index').CyclesJohnson} */
-/** @type {import('../../dist/index').CyclesDFS} */
+import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
+/** @type {import('../../dist/cjs/index').DiGraph} */
+/** @type {import('../../dist/cjs/index').CyclesJohnson} */
+/** @type {import('../../dist/cjs/index').CyclesDFS} */
 
 {
   console.log('----------------------------------------');
