@@ -6,6 +6,8 @@
 
 # ya-digraph-js
 
+Yet another graph module.
+
 Based on the idea of https://github.com/antoine-coulon/digraph-js
 
 Make Directed Graphs traversal and construction effortless, also includes deep circular dependency detection.
