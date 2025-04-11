@@ -1,5 +1,5 @@
-import { DiGraph } from './digraph';
-import { DiGraphDict, ICycles, IDiGraph } from './interface';
+import { DiGraph } from './digraph.js';
+import { DiGraphDict, ICycles, IDiGraph } from './interface.js';
 
 abstract class CyclesBase<Vertex, Edge> implements ICycles<Vertex, Edge> {
   constructor(public readonly graph: IDiGraph<Vertex, Edge>) {}
