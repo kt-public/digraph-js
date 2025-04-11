@@ -29,8 +29,8 @@ export class DiGraph<Vertex = never, Edge = never> implements IDiGraph<Vertex, E
     return { vertices, edges };
   }
 
-  #vertices: Map<string, Vertex | undefined> = new Map();
-  #edges: Map<string, Map<string, Edge | undefined>> = new Map();
+  readonly #vertices: Map<string, Vertex | undefined> = new Map();
+  readonly #edges: Map<string, Map<string, Edge | undefined>> = new Map();
 
   hasVertex(id: string): boolean {
     return this.#vertices.has(id);
@@ -104,17 +104,17 @@ export class DiGraph<Vertex = never, Edge = never> implements IDiGraph<Vertex, E
   protected validateEdgesExist(...edgeIds: EdgeId[]): void {
     const nonExistentEdges = edgeIds.filter((edgeId) => !this.hasEdge(edgeId));
     if (nonExistentEdges.length > 0) {
-      throw new Error(
-        `Edges do not exist in the graph: ${nonExistentEdges.map((edgeId) => `${edgeId.from}->${edgeId.to}`).join(', ')}`
-      );
+      const edgeList = nonExistentEdges
+        .map((edgeId) => `${edgeId.from} -> ${edgeId.to}`)
+        .join(', ');
+      throw new Error(`Edges do not exist in the graph: ${edgeList}`);
     }
   }
   protected validateEdgesDoNotExist(...edgeIds: EdgeId[]): void {
     const existentEdges = edgeIds.filter((edgeId) => this.hasEdge(edgeId));
     if (existentEdges.length > 0) {
-      throw new Error(
-        `Edges already exist in the graph: ${existentEdges.map((edgeId) => `${edgeId.from}->${edgeId.to}`).join(', ')}`
-      );
+      const edgeList = existentEdges.map((edgeId) => `${edgeId.from} -> ${edgeId.to}`).join(', ');
+      throw new Error(`Edges already exist in the graph: ${edgeList}`);
     }
   }
   protected validateAddEdges(...edges: EdgeWithId<Edge>[]): void {
@@ -129,9 +129,8 @@ export class DiGraph<Vertex = never, Edge = never> implements IDiGraph<Vertex, E
     // Check that there are no self-loops
     const selfLoops = edges.filter((edge) => edge.from === edge.to);
     if (selfLoops.length > 0) {
-      throw new Error(
-        `Self-loops are not allowed: ${selfLoops.map((edge) => `${edge.from}->${edge.to}`).join(', ')}`
-      );
+      const selfLoopEdges = selfLoops.map((edge) => `${edge.from} -> ${edge.to}`).join(', ');
+      throw new Error('Self-loops are not allowed: ' + selfLoopEdges);
     }
     // Check that the edges do not point to non-existent vertices
     const nonExistentVertices = edges
@@ -139,9 +138,8 @@ export class DiGraph<Vertex = never, Edge = never> implements IDiGraph<Vertex, E
       .flat()
       .filter((id) => !this.hasVertex(id));
     if (nonExistentVertices.length > 0) {
-      throw new Error(
-        `Edges point to non-existent vertices: ${nonExistentVertices.map((id) => `${id}`).join(', ')}`
-      );
+      const nonExistentVerticesList = nonExistentVertices.map((id) => id).join(', ');
+      throw new Error('Edges point to non-existent vertices: ' + nonExistentVerticesList);
     }
     // Check that the edges do not exist in the graph
     this.validateEdgesDoNotExist(...edges.map((edge) => ({ from: edge.from, to: edge.to })));

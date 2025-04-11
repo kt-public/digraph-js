@@ -256,14 +256,14 @@ describe('Directed Graph Implementation', () => {
         digraph.addVertices(vertexA, vertexB, vertexC);
         digraph.addEdges({ from: vertexB.id, to: vertexA.id });
         expect(() => digraph.addEdges({ from: vertexB.id, to: vertexA.id })).to.throw(
-          'Edges already exist in the graph: b->a'
+          'Edges already exist in the graph: b -> a'
         );
 
         expect(Array.from(digraph.getDescendantIds(vertexB.id))).deep.equal([vertexA.id]);
 
         digraph.addEdges({ from: vertexB.id, to: vertexC.id });
         expect(() => digraph.addEdges({ from: vertexB.id, to: vertexC.id })).to.throw(
-          'Edges already exist in the graph: b->c'
+          'Edges already exist in the graph: b -> c'
         );
 
         expect(Array.from(digraph.getDescendantIds(vertexB.id))).deep.equal([
@@ -278,7 +278,7 @@ describe('Directed Graph Implementation', () => {
 
         digraph.addVertices(vertexA);
         expect(() => digraph.addEdges({ from: vertexA.id, to: vertexA.id })).to.throw(
-          'Self-loops are not allowed: a->a'
+          'Self-loops are not allowed: a -> a'
         );
 
         expect(Array.from(digraph.getDescendantIds(vertexA.id))).to.deep.equal([]);
@@ -305,7 +305,7 @@ describe('Directed Graph Implementation', () => {
 
         digraph.addVertices(vertexA);
         expect(() => digraph.deleteEdges({ from: vertexA.id, to: vertexB.id })).to.throw(
-          'Edges do not exist in the graph: a->b'
+          'Edges do not exist in the graph: a -> b'
         );
       });
     });

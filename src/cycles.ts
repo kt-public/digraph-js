@@ -92,7 +92,6 @@ export class CyclesJohnson<Vertex, Edge> extends CyclesBase<Vertex, Edge> {
     const blocked = new Set<string>();
     const blockMap = new Map<string, Set<string>>();
     const stack: string[] = [];
-    //const cycles: string[][] = [];
     const thisGraph = this.cloneSimpleGraph();
 
     function unblock(node: string) {
@@ -141,8 +140,7 @@ export class CyclesJohnson<Vertex, Edge> extends CyclesBase<Vertex, Edge> {
     }
 
     const vertices = [...thisGraph.getVertexIds()];
-    for (let i = 0; i < vertices.length; i++) {
-      const startVertex = vertices[i];
+    for (const startVertex of vertices) {
       yield* circuit(startVertex, startVertex);
 
       // Remove processed vertex and its edges
