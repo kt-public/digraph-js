@@ -41,16 +41,20 @@ digraph.getAncestors(someId);
 Traversal functionality is for different traversion over the graph: DFS, BFS, deep descendants, deep ancestors
 
 ```ts
+// BFS
 let bfs = GraphTraversal.bfs(graph);
 // Traverse over ids of vertices
-bfs.traverseIds();
-bfs.traverseIds({ startVertexId: '1' });
-bfs.traverseIds({ startVertexId: '1', depthLimit: 2 });
+const ids = bfs.traverseIds();
+const ids = bfs.traverseIds({ startVertexId: '1' });
+const ids = bfs.traverseIds({ startVertexId: '1', depthLimit: 2 });
 // Traverse over nodes as {id, vertex}
-bfs.traverse();
-bfs.traverse({ startVertexId: '1' });
-bfs.traverse({ startVertexId: '1', depthLimit: 2 });
+const verticesWithIds = bfs.traverse();
+const verticesWithIds = bfs.traverse({ startVertexId: '1' });
+const verticesWithIds = bfs.traverse({ startVertexId: '1', depthLimit: 2 });
+
+// DFS
 let dfs = GraphTraversal.dfs(graph);
+
 // Deep descendants
 const childrenIds = DescendantTraversal.getDeepDescendantIds(graph, '1');
 const children = DescendantTraversal.getDeepDescendant(graph, '1');
