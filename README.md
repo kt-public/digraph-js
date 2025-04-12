@@ -1,7 +1,7 @@
 [![CI](https://github.com/kt-public/digraph-js/actions/workflows/ci.yml/badge.svg?branch=main)](https://github.com/kt-public/digraph-js/actions/workflows/ci.yml)
 [![Quality Gate Status](https://sonarcloud.io/api/project_badges/measure?project=kt-public_digraph-js&metric=alert_status)](https://sonarcloud.io/summary/new_code?id=kt-public_digraph-js)
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=kt-public_digraph-js&metric=bugs)](https://sonarcloud.io/summary/new_code?id=kt-public_digraph-js)
-[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=kt-public_digraph-js&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=kt-public_digraph-js)
+[![Coverage](https://sonarcloud.io/api/project_badges/measure?project=kt-public_digraph-js&metric=coverage)](https://sonarcloud.io/summary/new_code?id=kt-public_digraph-js)[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=kt-public_digraph-js&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=kt-public_digraph-js)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=kt-public_digraph-js&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=kt-public_digraph-js)
 
 # ya-digraph-js
