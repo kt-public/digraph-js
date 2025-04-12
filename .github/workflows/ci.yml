@@ -44,7 +44,10 @@ jobs:
           node-version: ${{ matrix.node-version }}
           cache: npm
       - run: npm ci
+      - run: npm run build
       - run: npm run coverage
+      - run: node ./find-cycles.js
+        working-directory: ./benchmarks/webpack
   codeql:
     uses: ./.github/workflows/codeql.yml
     secrets: inherit
