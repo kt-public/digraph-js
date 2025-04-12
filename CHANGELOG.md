@@ -1,5 +1,11 @@
 # ya-digraph-js
 
+## 0.2.0
+
+### Minor Changes
+
+- 131c7d1: Change to ESM, readme, benchmark
+
 ## 0.1.2
 
 ### Patch Changes
