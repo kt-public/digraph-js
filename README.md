@@ -85,6 +85,8 @@ expect(foundCycles).to.deep.equal([['a', 'b', 'c', 'd']]);
 
 For sample benchmarking, refer to the [webpack cycle detection benchmark script](./benchmarks/webpack/find-cycles.js).
 
+`Apple M1 Max`
+
 ```bash
 ----------------------------------------
 Started webpack benchmark with cycle detection = INFINITY (Johnson)
