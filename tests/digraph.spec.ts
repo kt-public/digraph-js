@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { DiGraph, DiGraphDict, VertexWithId } from '../src';
+import { DiGraph, DiGraphDict, VertexWithId } from 'ya-digraph-js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Vertex = Record<string, any>;
