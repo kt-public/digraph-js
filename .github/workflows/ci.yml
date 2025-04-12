@@ -59,3 +59,15 @@ jobs:
       # only required for workflows in private repositories
       actions: read
       contents: read
+  sonar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - run: npm ci
+      - run: npm run build
+      - run: npm run coverage
+      - uses: sonarsource/sonarqube-scan-action@v5
+        env:
+          SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
