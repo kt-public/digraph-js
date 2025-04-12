@@ -80,3 +80,58 @@ expect(cycles.hasCycles()).to.equal(true);
 const foundCycles = Array.from(cycles.findCycles());
 expect(foundCycles).to.deep.equal([['a', 'b', 'c', 'd']]);
 ```
+
+# Benchmark
+
+For sample benchmarking, refer to the [webpack cycle detection benchmark script](./benchmarks/webpack/find-cycles.js).
+
+```bash
+----------------------------------------
+Started webpack benchmark with cycle detection = INFINITY (Johnson)
+Has cycles:  true
+Cycles found:  127988
+Duration (seconds):  9.665837625
+Duplicates:  0
+Unique cycles:  127988
+Longest cycle:  33
+----------------------------------------
+Started webpack benchmark with cycle detection = INFINITY (DFS)
+Has cycles:  true
+Cycles found:  164
+Duration (seconds):  0.0016959590000005847
+Duplicates:  0
+Unique cycles:  164
+Longest cycle:  16
+----------------------------------------
+Started webpack benchmark with cycle detection = 500
+Has cycles:  true
+Cycles found:  164
+Duration (seconds):  0.0010632080000013958
+Duplicates:  0
+Unique cycles:  164
+Longest cycle:  16
+----------------------------------------
+Started webpack benchmark with cycle detection = 100
+Has cycles:  true
+Cycles found:  164
+Duration (seconds):  0.0011481669999993756
+Duplicates:  0
+Unique cycles:  164
+Longest cycle:  16
+----------------------------------------
+Started webpack benchmark with cycle detection = 20
+Has cycles:  true
+Cycles found:  164
+Duration (seconds):  0.001005582999998296
+Duplicates:  0
+Unique cycles:  164
+Longest cycle:  16
+----------------------------------------
+Started webpack benchmark with cycle detection = 10
+Has cycles:  true
+Cycles found:  143
+Duration (seconds):  0.0009575420000001031
+Duplicates:  0
+Unique cycles:  143
+Longest cycle:  7
+```

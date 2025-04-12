@@ -1,10 +1,10 @@
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { performance } from 'node:perf_hooks';
-import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
-/** @type {import('../../dist/cjs/index').DiGraph} */
-/** @type {import('../../dist/cjs/index').CyclesJohnson} */
-/** @type {import('../../dist/cjs/index').CyclesDFS} */
+import { CyclesDFS, CyclesJohnson, DiGraph } from 'ya-digraph-js';
+/** @type {import('ya-digraph-js').DiGraph} */
+/** @type {import('ya-digraph-js').CyclesJohnson} */
+/** @type {import('ya-digraph-js').CyclesDFS} */
 
 {
   console.log('----------------------------------------');
@@ -24,10 +24,11 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
   const start = performance.now();
   console.log('Started webpack benchmark with cycle detection = INFINITY (Johnson)');
   const cyclesSearch = new CyclesJohnson(graph);
+  console.log('Has cycles: ', cyclesSearch.hasCycles());
   const cycles = [...cyclesSearch.findCycles()];
   const end = performance.now() - start;
-  console.log(`${cycles.length} cycles found`);
-  console.log(`Took ${(end / 1000).toFixed(3)} seconds to find cycles on Webpack`);
+  console.log('Cycles found: ', cycles.length);
+  console.log('Duration (seconds): ', end / 1000);
 
   // find if there are any duplicates
   const duplicates = [];
@@ -68,10 +69,11 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
   const start = performance.now();
   console.log('Started webpack benchmark with cycle detection = INFINITY (DFS)');
   const cyclesSearch = new CyclesDFS(graph);
+  console.log('Has cycles: ', cyclesSearch.hasCycles());
   const cycles = [...cyclesSearch.findCycles()];
   const end = performance.now() - start;
-  console.log(`${cycles.length} cycles found`);
-  console.log(`Took ${(end / 1000).toFixed(3)} seconds to find cycles on Webpack`);
+  console.log('Cycles found: ', cycles.length);
+  console.log('Duration (seconds): ', end / 1000);
 
   // find if there are any duplicates
   const duplicates = [];
@@ -112,10 +114,11 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
   const start = performance.now();
   console.log('Started webpack benchmark with cycle detection = 500');
   const cyclesSearch = new CyclesDFS(graph);
+  console.log('Has cycles: ', cyclesSearch.hasCycles(500));
   const cycles = [...cyclesSearch.findCycles(500)];
   const end = performance.now() - start;
-  console.log(`${cycles.length} cycles found`);
-  console.log(`Took ${(end / 1000).toFixed(3)} seconds to find cycles on Webpack`);
+  console.log('Cycles found: ', cycles.length);
+  console.log('Duration (seconds): ', end / 1000);
 
   // find if there are any duplicates
   const duplicates = [];
@@ -156,10 +159,11 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
   const start = performance.now();
   console.log('Started webpack benchmark with cycle detection = 100');
   const cyclesSearch = new CyclesDFS(graph);
+  console.log('Has cycles: ', cyclesSearch.hasCycles(100));
   const cycles = [...cyclesSearch.findCycles(100)];
   const end = performance.now() - start;
-  console.log(`${cycles.length} cycles found`);
-  console.log(`Took ${(end / 1000).toFixed(3)} seconds to find cycles on Webpack`);
+  console.log('Cycles found: ', cycles.length);
+  console.log('Duration (seconds): ', end / 1000);
 
   // find if there are any duplicates
   const duplicates = [];
@@ -200,10 +204,11 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
   const start = performance.now();
   console.log('Started webpack benchmark with cycle detection = 20');
   const cyclesSearch = new CyclesDFS(graph);
+  console.log('Has cycles: ', cyclesSearch.hasCycles(20));
   const cycles = [...cyclesSearch.findCycles(20)];
   const end = performance.now() - start;
-  console.log(`${cycles.length} cycles found`);
-  console.log(`Took ${(end / 1000).toFixed(3)} seconds to find cycles on Webpack`);
+  console.log('Cycles found: ', cycles.length);
+  console.log('Duration (seconds): ', end / 1000);
 
   // find if there are any duplicates
   const duplicates = [];
@@ -244,10 +249,11 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from '../../dist/cjs/index.js';
   const start = performance.now();
   console.log('Started webpack benchmark with cycle detection = 10');
   const cyclesSearch = new CyclesDFS(graph);
+  console.log('Has cycles: ', cyclesSearch.hasCycles(10));
   const cycles = [...cyclesSearch.findCycles(10)];
   const end = performance.now() - start;
-  console.log(`${cycles.length} cycles found`);
-  console.log(`Took ${(end / 1000).toFixed(3)} seconds to find cycles on Webpack`);
+  console.log('Cycles found: ', cycles.length);
+  console.log('Duration (seconds): ', end / 1000);
 
   // find if there are any duplicates
   const duplicates = [];
