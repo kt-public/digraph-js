@@ -1,6 +1,11 @@
 import { describe, expect, it } from 'vitest';
-import { DiGraph, VertexWithId } from '../src';
-import { AncestorTraversal, DescendantTraversal, GraphTraversal } from '../src/traversal';
+import {
+  AncestorTraversal,
+  DescendantTraversal,
+  DiGraph,
+  GraphTraversal,
+  VertexWithId
+} from 'ya-digraph-js';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Vertex = Record<string, any>;
