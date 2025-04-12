@@ -5,7 +5,7 @@ import {
   DiGraph,
   GraphTraversal,
   VertexWithId
-} from 'ya-digraph-js';
+} from '../src/index';
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 type Vertex = Record<string, any>;
