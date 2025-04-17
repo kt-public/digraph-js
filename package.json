@@ -42,7 +42,7 @@
     "lint": "prettier --check . && eslint .",
     "check": "tsc --skipLibCheck",
     "test": "vitest run && npm run benchmark",
-    "benchmark": "cd tests/benchmarks/webpack && node ./find-cycles.js",
+    "benchmark": "cd tests/benchmarks/webpack && tsx ./find-cycles.ts",
     "coverage": "vitest run --coverage",
     "changeset:version": "changeset version && git add --all",
     "changeset:publish": "changeset publish"
@@ -71,11 +71,11 @@
     "rimraf": "^6.0.1",
     "tsc-alias": "^1.8.15",
     "tsconfig-to-dual-package": "^1.2.0",
+    "tsx": "^4.19.3",
     "typescript": "^5.8.2",
     "typescript-eslint": "^8.26.1",
     "vitest": "^3.0.8"
   },
-  "dependencies": {},
   "engines": {
     "node": ">=20.0.0"
   }
