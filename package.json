@@ -35,7 +35,8 @@
     }
   },
   "scripts": {
-    "build": "rimraf ./dist && tsc --project tsconfig.json && tsc-alias --project tsconfig.json && npm run prepack",
+    "build": "rimraf ./dist && tsc --project tsconfig.json && npm run prepack",
+    "build:release": "rimraf ./dist && tsc --project tsconfig-release.json && npm run prepack",
     "prepare": "echo ''",
     "prepack": "publint",
     "format": "prettier --write .",
@@ -69,7 +70,6 @@
     "prettier": "^3.5.3",
     "publint": "^0.3.11",
     "rimraf": "^6.0.1",
-    "tsc-alias": "^1.8.15",
     "tsconfig-to-dual-package": "^1.2.0",
     "tsx": "^4.19.3",
     "typescript": "^5.8.2",
