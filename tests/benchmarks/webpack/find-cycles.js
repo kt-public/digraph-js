@@ -6,21 +6,21 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from 'ya-digraph-js';
 /** @type {import('ya-digraph-js').CyclesJohnson} */
 /** @type {import('ya-digraph-js').CyclesDFS} */
 
+const data = await readFile(path.join(process.cwd(), './webpack.json'));
+const graph = new DiGraph();
+// add vertices to the graph
+for (const [nodeId] of Object.entries(JSON.parse(data))) {
+  graph.addVertices({ id: nodeId });
+}
+// add edges to the graph
+for (const [nodeId, nodeValue] of Object.entries(JSON.parse(data))) {
+  for (const from of nodeValue.adjacentTo) {
+    graph.addEdges({ from: nodeId, to: from });
+  }
+}
+
 {
   console.log('----------------------------------------');
-  const data = await readFile(path.join(process.cwd(), './webpack.json'));
-  const graph = new DiGraph();
-  // add vertices to the graph
-  for (const [nodeId] of Object.entries(JSON.parse(data))) {
-    graph.addVertices({ id: nodeId });
-  }
-  // add edges to the graph
-  for (const [nodeId, nodeValue] of Object.entries(JSON.parse(data))) {
-    for (const from of nodeValue.adjacentTo) {
-      graph.addEdges({ from: nodeId, to: from });
-    }
-  }
-
   const start = performance.now();
   console.log('Started webpack benchmark with cycle detection = INFINITY (Johnson)');
   const cyclesSearch = new CyclesJohnson(graph);
@@ -53,19 +53,6 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from 'ya-digraph-js';
 
 {
   console.log('----------------------------------------');
-  const data = await readFile(path.join(process.cwd(), './webpack.json'));
-  const graph = new DiGraph();
-  // add vertices to the graph
-  for (const [nodeId] of Object.entries(JSON.parse(data))) {
-    graph.addVertices({ id: nodeId });
-  }
-  // add edges to the graph
-  for (const [nodeId, nodeValue] of Object.entries(JSON.parse(data))) {
-    for (const from of nodeValue.adjacentTo) {
-      graph.addEdges({ from: nodeId, to: from });
-    }
-  }
-
   const start = performance.now();
   console.log('Started webpack benchmark with cycle detection = INFINITY (DFS)');
   const cyclesSearch = new CyclesDFS(graph);
@@ -98,19 +85,6 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from 'ya-digraph-js';
 
 {
   console.log('----------------------------------------');
-  const data = await readFile(path.join(process.cwd(), './webpack.json'));
-  const graph = new DiGraph();
-  // add vertices to the graph
-  for (const [nodeId] of Object.entries(JSON.parse(data))) {
-    graph.addVertices({ id: nodeId });
-  }
-  // add edges to the graph
-  for (const [nodeId, nodeValue] of Object.entries(JSON.parse(data))) {
-    for (const from of nodeValue.adjacentTo) {
-      graph.addEdges({ from: nodeId, to: from });
-    }
-  }
-
   const start = performance.now();
   console.log('Started webpack benchmark with cycle detection = 500');
   const cyclesSearch = new CyclesDFS(graph);
@@ -143,19 +117,6 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from 'ya-digraph-js';
 
 {
   console.log('----------------------------------------');
-  const data = await readFile(path.join(process.cwd(), './webpack.json'));
-  const graph = new DiGraph();
-  // add vertices to the graph
-  for (const [nodeId] of Object.entries(JSON.parse(data))) {
-    graph.addVertices({ id: nodeId });
-  }
-  // add edges to the graph
-  for (const [nodeId, nodeValue] of Object.entries(JSON.parse(data))) {
-    for (const from of nodeValue.adjacentTo) {
-      graph.addEdges({ from: nodeId, to: from });
-    }
-  }
-
   const start = performance.now();
   console.log('Started webpack benchmark with cycle detection = 100');
   const cyclesSearch = new CyclesDFS(graph);
@@ -188,19 +149,6 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from 'ya-digraph-js';
 
 {
   console.log('----------------------------------------');
-  const data = await readFile(path.join(process.cwd(), './webpack.json'));
-  const graph = new DiGraph();
-  // add vertices to the graph
-  for (const [nodeId] of Object.entries(JSON.parse(data))) {
-    graph.addVertices({ id: nodeId });
-  }
-  // add edges to the graph
-  for (const [nodeId, nodeValue] of Object.entries(JSON.parse(data))) {
-    for (const from of nodeValue.adjacentTo) {
-      graph.addEdges({ from: nodeId, to: from });
-    }
-  }
-
   const start = performance.now();
   console.log('Started webpack benchmark with cycle detection = 20');
   const cyclesSearch = new CyclesDFS(graph);
@@ -233,19 +181,6 @@ import { CyclesDFS, CyclesJohnson, DiGraph } from 'ya-digraph-js';
 
 {
   console.log('----------------------------------------');
-  const data = await readFile(path.join(process.cwd(), './webpack.json'));
-  const graph = new DiGraph();
-  // add vertices to the graph
-  for (const [nodeId] of Object.entries(JSON.parse(data))) {
-    graph.addVertices({ id: nodeId });
-  }
-  // add edges to the graph
-  for (const [nodeId, nodeValue] of Object.entries(JSON.parse(data))) {
-    for (const from of nodeValue.adjacentTo) {
-      graph.addEdges({ from: nodeId, to: from });
-    }
-  }
-
   const start = performance.now();
   console.log('Started webpack benchmark with cycle detection = 10');
   const cyclesSearch = new CyclesDFS(graph);

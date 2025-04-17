@@ -41,7 +41,8 @@
     "format": "prettier --write .",
     "lint": "prettier --check . && eslint .",
     "check": "tsc --skipLibCheck",
-    "test": "vitest run",
+    "test": "vitest run && npm run benchmark",
+    "benchmark": "cd tests/benchmarks/webpack && node ./find-cycles.js",
     "coverage": "vitest run --coverage",
     "changeset:version": "changeset version && git add --all",
     "changeset:publish": "changeset publish"
@@ -60,7 +61,6 @@
   "devDependencies": {
     "@changesets/cli": "^2.28.1",
     "@eslint/compat": "^1.2.7",
-    "@types/lodash": "^4.17.16",
     "@types/node": "^22.13.10",
     "@vitest/coverage-istanbul": "^3.1.1",
     "@vitest/coverage-v8": "^3.1.1",
@@ -75,9 +75,7 @@
     "typescript-eslint": "^8.26.1",
     "vitest": "^3.0.8"
   },
-  "dependencies": {
-    "lodash": "^4.17.21"
-  },
+  "dependencies": {},
   "engines": {
     "node": ">=20.0.0"
   }
