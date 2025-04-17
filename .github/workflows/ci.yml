@@ -46,8 +46,6 @@ jobs:
       - run: npm ci
       - run: npm run build
       - run: npm run test
-      - run: node ./find-cycles.js
-        working-directory: ./benchmarks/webpack
   codeql:
     uses: ./.github/workflows/codeql.yml
     secrets: inherit
