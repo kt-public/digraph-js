@@ -12,12 +12,14 @@ const graph = new DiGraph();
 for (const [nodeId] of Object.entries(JSON.parse(data))) {
   graph.addVertices({ id: nodeId });
 }
+console.log('Vertices added: ', Array.from(graph.getVertexIds()).length);
 // add edges to the graph
 for (const [nodeId, nodeValue] of Object.entries(JSON.parse(data))) {
   for (const from of nodeValue.adjacentTo) {
     graph.addEdges({ from: nodeId, to: from });
   }
 }
+console.log('Edges added: ', Array.from(graph.getEdgeIds()).length);
 
 {
   console.log('----------------------------------------');
