@@ -13,9 +13,8 @@
     "strict": true,
     "outDir": "./dist",
     "declaration": true,
-    // source maps are not generated
-    "sourceMap": false,
-    "declarationMap": false
+    "sourceMap": true,
+    "declarationMap": true
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "coverage"]
