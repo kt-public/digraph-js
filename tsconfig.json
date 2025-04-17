@@ -13,6 +13,7 @@
     "strict": true,
     "outDir": "./dist",
     "declaration": true,
+    // source maps are not generated
     "sourceMap": false,
     "declarationMap": false
   },
