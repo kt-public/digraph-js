@@ -2,11 +2,8 @@ import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { performance } from 'node:perf_hooks';
 import { CyclesDFS, CyclesJohnson, DiGraph } from 'ya-digraph-js';
-/** @type {import('ya-digraph-js').DiGraph} */
-/** @type {import('ya-digraph-js').CyclesJohnson} */
-/** @type {import('ya-digraph-js').CyclesDFS} */
 
-const data = await readFile(path.join(process.cwd(), './webpack.json'));
+const data = await readFile(path.join(process.cwd(), './webpack.json'), 'utf-8');
 const graph = new DiGraph();
 // add vertices to the graph
 for (const [nodeId] of Object.entries(JSON.parse(data))) {
@@ -15,7 +12,8 @@ for (const [nodeId] of Object.entries(JSON.parse(data))) {
 console.log('Vertices added: ', Array.from(graph.getVertexIds()).length);
 // add edges to the graph
 for (const [nodeId, nodeValue] of Object.entries(JSON.parse(data))) {
-  for (const from of nodeValue.adjacentTo) {
+  const typedNodeValue = nodeValue as { adjacentTo: string[] }; // Explicitly type nodeValue
+  for (const from of typedNodeValue.adjacentTo) {
     graph.addEdges({ from: nodeId, to: from });
   }
 }
@@ -33,8 +31,8 @@ console.log('Edges added: ', Array.from(graph.getEdgeIds()).length);
   console.log('Duration (seconds): ', end / 1000);
 
   // find if there are any duplicates
-  const duplicates = [];
-  const uniqueCycles = [];
+  const duplicates: string[][] = [];
+  const uniqueCycles: string[][] = [];
   const uniqueCyclesSet = new Set();
   for (const cycle of cycles) {
     const cycleString = [...cycle].sort().join(',');
@@ -65,8 +63,8 @@ console.log('Edges added: ', Array.from(graph.getEdgeIds()).length);
   console.log('Duration (seconds): ', end / 1000);
 
   // find if there are any duplicates
-  const duplicates = [];
-  const uniqueCycles = [];
+  const duplicates: string[][] = [];
+  const uniqueCycles: string[][] = [];
   const uniqueCyclesSet = new Set();
   for (const cycle of cycles) {
     const cycleString = [...cycle].sort().join(',');
@@ -97,8 +95,8 @@ console.log('Edges added: ', Array.from(graph.getEdgeIds()).length);
   console.log('Duration (seconds): ', end / 1000);
 
   // find if there are any duplicates
-  const duplicates = [];
-  const uniqueCycles = [];
+  const duplicates: string[][] = [];
+  const uniqueCycles: string[][] = [];
   const uniqueCyclesSet = new Set();
   for (const cycle of cycles) {
     const cycleString = [...cycle].sort().join(',');
@@ -129,8 +127,8 @@ console.log('Edges added: ', Array.from(graph.getEdgeIds()).length);
   console.log('Duration (seconds): ', end / 1000);
 
   // find if there are any duplicates
-  const duplicates = [];
-  const uniqueCycles = [];
+  const duplicates: string[][] = [];
+  const uniqueCycles: string[][] = [];
   const uniqueCyclesSet = new Set();
   for (const cycle of cycles) {
     const cycleString = [...cycle].sort().join(',');
@@ -161,8 +159,8 @@ console.log('Edges added: ', Array.from(graph.getEdgeIds()).length);
   console.log('Duration (seconds): ', end / 1000);
 
   // find if there are any duplicates
-  const duplicates = [];
-  const uniqueCycles = [];
+  const duplicates: string[][] = [];
+  const uniqueCycles: string[][] = [];
   const uniqueCyclesSet = new Set();
   for (const cycle of cycles) {
     const cycleString = [...cycle].sort().join(',');
@@ -193,8 +191,8 @@ console.log('Edges added: ', Array.from(graph.getEdgeIds()).length);
   console.log('Duration (seconds): ', end / 1000);
 
   // find if there are any duplicates
-  const duplicates = [];
-  const uniqueCycles = [];
+  const duplicates: string[][] = [];
+  const uniqueCycles: string[][] = [];
   const uniqueCyclesSet = new Set();
   for (const cycle of cycles) {
     const cycleString = [...cycle].sort().join(',');
