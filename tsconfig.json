@@ -10,11 +10,11 @@
     "forceConsistentCasingInFileNames": true,
     "resolveJsonModule": true,
     "skipLibCheck": true,
-    "sourceMap": true,
     "strict": true,
     "outDir": "./dist",
     "declaration": true,
-    "declarationMap": true
+    "sourceMap": false,
+    "declarationMap": false
   },
   "include": ["src"],
   "exclude": ["node_modules", "dist", "coverage"]
