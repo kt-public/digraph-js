@@ -1,5 +1,19 @@
 # ya-digraph-js
 
+## 0.2.1
+
+### Patch Changes
+
+- 37df58f: dependabot: directory '/', update eslint
+- a4b936a: Remove unnecessary dependency on lodash
+- bde4126: Remove generation of the sourcemaps for the distribution
+- be225ee: dependabot: update @changesets/cli
+- c424ea3: dependabot: update @changesets/cli
+- 7000cb5: dependabot: update @changesets/cli
+- 2621c94: dependabot: update @types/node
+- c424ea3: dependabot: update publint
+- c424ea3: dependabot: update typescript-eslint
+
 ## 0.2.0
 
 ### Minor Changes
