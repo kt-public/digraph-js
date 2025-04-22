@@ -92,5 +92,18 @@ describe('Graph Paths', () => {
       ];
       expect(result).toEqual(expected);
     });
+    it('should return empty paths from a given vertex, without edges - paths with just one vertex are not emitted', ({
+      expect
+    }) => {
+      const graph = new DiGraph<Vertex>();
+      const vertices = [...createRawVertices('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')];
+      graph.addVertices(...vertices);
+      graph.addEdges({ from: '1', to: '2' });
+      graph.addEdges({ from: '2', to: '3' });
+      const paths = new GraphPaths(graph);
+      const result = [...paths.getPathsFrom('1', 1)];
+      const expected: string[][] = [['1', '2']];
+      expect(result).toEqual(expected);
+    });
   });
 });
