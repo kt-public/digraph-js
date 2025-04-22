@@ -31,7 +31,7 @@ export class GraphPaths<Vertex, Edge> {
           // Check if this is cycle
           if (pathSet.has(neighbor)) {
             // Cycle detected
-            yield [...path]; // Return the current path
+            yield [...path, neighbor]; // Return the current path, with cycle
             continue; // Skip to the next neighbor
           }
           // Continue DFS
