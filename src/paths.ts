@@ -15,7 +15,9 @@ export class GraphPaths<Vertex, Edge> {
       depth: number
     ): Generator<string[]> {
       if (depth > depthLimit) {
-        yield [...path]; // Return the current path
+        if (path.length > 1) {
+          yield [...path]; // Return the current path
+        }
         return;
       }
 
@@ -25,7 +27,9 @@ export class GraphPaths<Vertex, Edge> {
       const neighbors = [...thisGraph.getDescendantIds(currentVertex)];
       if (!neighbors || neighbors.length === 0) {
         // Leaf node
-        yield [...path]; // Return the current path
+        if (path.length > 1) {
+          yield [...path]; // Return the current path
+        }
       } else {
         for (const neighbor of neighbors) {
           // Check if this is cycle
