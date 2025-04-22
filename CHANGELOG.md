@@ -1,5 +1,11 @@
 # ya-digraph-js
 
+## 0.2.3
+
+### Patch Changes
+
+- 21bb820: Remove emitting paths with just one vertex
+
 ## 0.2.2
 
 ### Patch Changes
