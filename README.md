@@ -189,11 +189,13 @@ To perform benchmarks on a wide graph, we use webpack which is probably one of t
 `Apple M1 Max`
 
 ```bash
+Vertices added:  560
+Edges added:  2004
 ----------------------------------------
 Started webpack benchmark with cycle detection = INFINITY (Johnson)
 Has cycles:  true
 Cycles found:  127988
-Duration (seconds):  9.665837625
+Duration (seconds):  9.648516041999999
 Duplicates:  0
 Unique cycles:  127988
 Longest cycle:  33
@@ -201,7 +203,7 @@ Longest cycle:  33
 Started webpack benchmark with cycle detection = INFINITY (DFS)
 Has cycles:  true
 Cycles found:  164
-Duration (seconds):  0.0016959590000005847
+Duration (seconds):  0.001205959000000803
 Duplicates:  0
 Unique cycles:  164
 Longest cycle:  16
@@ -209,7 +211,7 @@ Longest cycle:  16
 Started webpack benchmark with cycle detection = 500
 Has cycles:  true
 Cycles found:  164
-Duration (seconds):  0.0010632080000013958
+Duration (seconds):  0.0009284170000009908
 Duplicates:  0
 Unique cycles:  164
 Longest cycle:  16
@@ -217,7 +219,7 @@ Longest cycle:  16
 Started webpack benchmark with cycle detection = 100
 Has cycles:  true
 Cycles found:  164
-Duration (seconds):  0.0011481669999993756
+Duration (seconds):  0.0007668749999993451
 Duplicates:  0
 Unique cycles:  164
 Longest cycle:  16
@@ -225,7 +227,7 @@ Longest cycle:  16
 Started webpack benchmark with cycle detection = 20
 Has cycles:  true
 Cycles found:  164
-Duration (seconds):  0.001005582999998296
+Duration (seconds):  0.000835291999999754
 Duplicates:  0
 Unique cycles:  164
 Longest cycle:  16
@@ -233,7 +235,7 @@ Longest cycle:  16
 Started webpack benchmark with cycle detection = 10
 Has cycles:  true
 Cycles found:  143
-Duration (seconds):  0.0009575420000001031
+Duration (seconds):  0.0018060420000001614
 Duplicates:  0
 Unique cycles:  143
 Longest cycle:  7
