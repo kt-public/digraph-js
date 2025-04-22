@@ -30,7 +30,7 @@ describe('Graph Paths', () => {
       graph.addEdges({ from: '9', to: '10' });
       graph.addEdges({ from: '10', to: '4' });
       const paths = new GraphPaths(graph);
-      const result = [...paths.getPathsFrom(graph, '1')];
+      const result = [...paths.getPathsFrom('1')];
       const expected = [
         ['1', '2', '3', '4'],
         ['1', '5', '6', '7'],
@@ -54,7 +54,7 @@ describe('Graph Paths', () => {
       graph.addEdges({ from: '9', to: '10' });
       graph.addEdges({ from: '10', to: '4' });
       const paths = new GraphPaths(graph);
-      const result = [...paths.getPathsFrom(graph, '1', 2)];
+      const result = [...paths.getPathsFrom('1', 2)];
       const expected = [
         ['1', '2', '3'],
         ['1', '5', '6'],
@@ -82,7 +82,7 @@ describe('Graph Paths', () => {
       graph.addEdges({ from: '4', to: '1' }); // Adding a cycle
       graph.addEdges({ from: '2', to: '1' }); // Adding a cycle
       const paths = new GraphPaths(graph);
-      const result = [...paths.getPathsFrom(graph, '1')];
+      const result = [...paths.getPathsFrom('1')];
       const expected = [
         ['1', '2', '3', '4', '1'],
         ['1', '2', '1'],

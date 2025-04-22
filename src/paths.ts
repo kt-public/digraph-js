@@ -1,13 +1,13 @@
 import { IDiGraph } from './interface';
 
 export class GraphPaths<Vertex, Edge> {
-  constructor(private graph: IDiGraph<Vertex, Edge>) {}
+  constructor(public readonly graph: IDiGraph<Vertex, Edge>) {}
 
-  *getPathsFrom<Vertex, Edge>(
-    graph: IDiGraph<Vertex, Edge>,
+  *getPathsFrom(
     startVertexId: string,
     depthLimit: number = Number.POSITIVE_INFINITY
   ): Generator<string[]> {
+    const thisGraph = this.graph;
     function* dfs(
       currentVertex: string,
       path: string[],
@@ -22,7 +22,7 @@ export class GraphPaths<Vertex, Edge> {
       path.push(currentVertex);
       pathSet.add(currentVertex);
 
-      const neighbors = [...graph.getDescendantIds(currentVertex)];
+      const neighbors = [...thisGraph.getDescendantIds(currentVertex)];
       if (!neighbors || neighbors.length === 0) {
         // Leaf node
         yield [...path]; // Return the current path
