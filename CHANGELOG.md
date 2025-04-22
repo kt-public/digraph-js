@@ -1,5 +1,16 @@
 # ya-digraph-js
 
+## 0.2.2
+
+### Patch Changes
+
+- eeb35ea: Add GraphPaths: getPathsFrom
+- d8c99fd: dependabot: directory '/', update @vitest/coverage-istanbul
+- d8c99fd: dependabot: directory '/', update @vitest/coverage-v8
+- d8c99fd: dependabot: directory '/', update eslint
+- d8c99fd: dependabot: directory '/', update typescript-eslint
+- d8c99fd: dependabot: directory '/', update vitest
+
 ## 0.2.1
 
 ### Patch Changes
