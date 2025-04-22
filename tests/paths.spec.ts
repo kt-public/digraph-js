@@ -63,5 +63,34 @@ describe('Graph Paths', () => {
       ];
       expect(result).toEqual(expected);
     });
+    it('should return all paths from a given vertex, depthLimit = INFINITY, with cycles', ({
+      expect
+    }) => {
+      const graph = new DiGraph<Vertex>();
+      const vertices = [...createRawVertices('1', '2', '3', '4', '5', '6', '7', '8', '9', '10')];
+      graph.addVertices(...vertices);
+      graph.addEdges({ from: '1', to: '2' });
+      graph.addEdges({ from: '2', to: '3' });
+      graph.addEdges({ from: '3', to: '4' });
+      graph.addEdges({ from: '1', to: '5' });
+      graph.addEdges({ from: '5', to: '6' });
+      graph.addEdges({ from: '6', to: '7' });
+      graph.addEdges({ from: '5', to: '8' });
+      graph.addEdges({ from: '1', to: '9' });
+      graph.addEdges({ from: '9', to: '10' });
+      graph.addEdges({ from: '10', to: '4' });
+      graph.addEdges({ from: '4', to: '1' }); // Adding a cycle
+      graph.addEdges({ from: '2', to: '1' }); // Adding a cycle
+      const paths = new GraphPaths(graph);
+      const result = [...paths.getPathsFrom(graph, '1')];
+      const expected = [
+        ['1', '2', '3', '4', '1'],
+        ['1', '2', '1'],
+        ['1', '5', '6', '7'],
+        ['1', '5', '8'],
+        ['1', '9', '10', '4', '1']
+      ];
+      expect(result).toEqual(expected);
+    });
   });
 });
