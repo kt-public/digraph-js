@@ -18,49 +18,49 @@ const contentFileD = `
 `;
 
 function detectCyclicImports() {
-  const diGraph = new DiGraph();
+	const diGraph = new DiGraph();
 
-  const fileA = {
-    id: 'A.js',
-    adjacentTo: [],
-    // metadata to simulate a real use case, this is not used to detect cycles
-    body: { fileContent: contentFileA }
-  };
-  const fileB = {
-    id: 'B.js',
-    adjacentTo: [],
-    // metadata to simulate a real use case, this is not used to detect cycles
-    body: { fileContent: contentFileB }
-  };
-  const fileC = {
-    id: 'C.js',
-    adjacentTo: [],
-    // metadata to simulate a real use case, this is not used to detect cycles
-    body: { fileContent: contentFileC }
-  };
-  const fileD = {
-    id: 'D.js',
-    adjacentTo: [],
-    // metadata to simulate a real use case, this is not used to detect cycles
-    body: { fileContent: contentFileD }
-  };
+	const fileA = {
+		id: 'A.js',
+		adjacentTo: [],
+		// metadata to simulate a real use case, this is not used to detect cycles
+		body: { fileContent: contentFileA }
+	};
+	const fileB = {
+		id: 'B.js',
+		adjacentTo: [],
+		// metadata to simulate a real use case, this is not used to detect cycles
+		body: { fileContent: contentFileB }
+	};
+	const fileC = {
+		id: 'C.js',
+		adjacentTo: [],
+		// metadata to simulate a real use case, this is not used to detect cycles
+		body: { fileContent: contentFileC }
+	};
+	const fileD = {
+		id: 'D.js',
+		adjacentTo: [],
+		// metadata to simulate a real use case, this is not used to detect cycles
+		body: { fileContent: contentFileD }
+	};
 
-  diGraph.addVertices(fileA, fileB, fileC, fileD);
+	diGraph.addVertices(fileA, fileB, fileC, fileD);
 
-  diGraph.addEdge({ from: fileA.id, to: fileC.id });
-  diGraph.addEdge({ from: fileB.id, to: fileA.id });
-  diGraph.addEdge({ from: fileC.id, to: fileB.id });
+	diGraph.addEdge({ from: fileA.id, to: fileC.id });
+	diGraph.addEdge({ from: fileB.id, to: fileA.id });
+	diGraph.addEdge({ from: fileC.id, to: fileB.id });
 
-  diGraph.addEdge({ from: fileC.id, to: fileD.id });
-  diGraph.addEdge({ from: fileD.id, to: fileC.id });
+	diGraph.addEdge({ from: fileC.id, to: fileD.id });
+	diGraph.addEdge({ from: fileD.id, to: fileC.id });
 
-  const cycles = diGraph.findCycles();
-  const prettyPrintCycles = cycles
-    .map((cycle, index) => `Cycle n°${index + 1}: [${cycle.join(' --> ')}]`)
-    .join('\n');
+	const cycles = diGraph.findCycles();
+	const prettyPrintCycles = cycles
+		.map((cycle, index) => `Cycle n°${index + 1}: [${cycle.join(' --> ')}]`)
+		.join('\n');
 
-  console.log('Has cycle dependencies?', cycles.length > 0);
-  console.log(prettyPrintCycles);
+	console.log('Has cycle dependencies?', cycles.length > 0);
+	console.log(prettyPrintCycles);
 }
 
 detectCyclicImports();
