@@ -42,8 +42,9 @@
 		"format": "prettier --write .",
 		"lint": "prettier --check . && eslint .",
 		"check": "tsc --skipLibCheck",
-		"test": "vitest run && npm run benchmark",
+		"check:test": "tsc --project tsconfig-test.json --skipLibCheck",
 		"benchmark": "cd tests/benchmarks/webpack && tsx ./find-cycles.ts",
+		"test": "npm run check:test && vitest run && npm run benchmark",
 		"coverage": "vitest run --coverage",
 		"changeset:version": "changeset version && git add --all",
 		"changeset:publish": "changeset publish"
