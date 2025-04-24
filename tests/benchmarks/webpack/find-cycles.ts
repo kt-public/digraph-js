@@ -1,7 +1,7 @@
+import { CyclesDFS, CyclesJohnson, DiGraph } from '@ktarmyshov/digraph-js';
 import { readFile } from 'node:fs/promises';
 import path from 'node:path';
 import { performance } from 'node:perf_hooks';
-import { CyclesDFS, CyclesJohnson, DiGraph } from 'ya-digraph-js';
 
 const data = await readFile(path.join(process.cwd(), './webpack.json'), 'utf-8');
 const graph = new DiGraph();
