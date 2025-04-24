@@ -1,4 +1,4 @@
-# ya-digraph-js
+# @ktarmyshov/digraph-js
 
 ## 0.2.3
 
