@@ -6,8 +6,12 @@
 
 # Get all dependencies and devDependencies into one array
 allDependencies=()
-allDependencies+=($(jq -r '.dependencies | keys[]' package.json))
-allDependencies+=($(jq -r '.devDependencies | keys[]' package.json))
+if jq -e '.dependencies' package.json >/dev/null; then
+  allDependencies+=($(jq -r '.dependencies | keys[]' package.json))
+fi
+if jq -e '.devDependencies' package.json >/dev/null; then
+  allDependencies+=($(jq -r '.devDependencies | keys[]' package.json))
+fi
 
 separator="------------------------------------------"
 
@@ -19,7 +23,7 @@ echo -e "Checking for linked packages from dependencies and devDependencies..."
 available_global_link_packages=$(
   npm ls -g --depth=0 --link=true 2>/dev/null | \
   awk -F ' -> ' '/ -> / {print $1}' | \
-  awk -F '@[0-9]' '{print $1}' | \
+  awk -F '@' '{print $1}' | \
   sed 's/^[^ ]* //g' | \
   # remove duplicates
   sort -u | \
