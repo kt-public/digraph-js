@@ -14,6 +14,7 @@ concurrency:
 
 permissions:
   contents: read # to fetch code (actions/checkout)
+  actions: write # to delete cache (actions/cache)
 
 jobs:
   # echo:
@@ -21,10 +22,35 @@ jobs:
   #   steps:
   #     - run: ${{ tojson(github) }}
   #       shell: cat {0}
-  ci:
-    uses: kt-workflows/npm-ci/.github/workflows/main.yml@v1
-    with:
-      # pass the matrix node version to the called workflow
-      matrix-node-version: ${{ vars.MATRIX_NODE_VERSION }}
-    secrets:
-      SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: kt-workflows/actions/npm-ci-check@main
+        with:
+          matrix-node-version: ${{ vars.MATRIX_NODE_VERSION }}
+          cache-additional-path: ${{ vars.CACHE_ADDITIONAL_PATH }}
+          # cache-reset: true
+
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: ${{ fromJson(vars.MATRIX_NODE_VERSION) }}
+    steps:
+      - uses: kt-workflows/actions/npm-ci-test@main
+        with:
+          # pass the matrix node version to the called workflow
+          node-version: ${{ matrix.node-version }}
+          cache-additional-path: ${{ vars.CACHE_ADDITIONAL_PATH }}
+          # cache-reset: true
+
+  sonar:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: kt-workflows/actions/npm-ci-sonar@main
+        with:
+          matrix-node-version: ${{ vars.MATRIX_NODE_VERSION }}
+          sonar-token: ${{ secrets.SONAR_TOKEN }}
+          fail-on-empty-token: true
+          cache-additional-path: ${{ vars.CACHE_ADDITIONAL_PATH }}
+          # cache-reset: true
