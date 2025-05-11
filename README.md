@@ -4,6 +4,7 @@
 [![Bugs](https://sonarcloud.io/api/project_badges/measure?project=kt-npm-modules_digraph-js&metric=bugs)](https://sonarcloud.io/summary/new_code?id=kt-npm-modules_digraph-js)
 [![Coverage](https://sonarcloud.io/api/project_badges/measure?project=kt-npm-modules_digraph-js&metric=coverage)](https://sonarcloud.io/summary/new_code?id=kt-npm-modules_digraph-js)[![Code Smells](https://sonarcloud.io/api/project_badges/measure?project=kt-npm-modules_digraph-js&metric=code_smells)](https://sonarcloud.io/summary/new_code?id=kt-npm-modules_digraph-js)
 [![Duplicated Lines (%)](https://sonarcloud.io/api/project_badges/measure?project=kt-npm-modules_digraph-js&metric=duplicated_lines_density)](https://sonarcloud.io/summary/new_code?id=kt-npm-modules_digraph-js)
+[![Socket Badge](https://socket.dev/api/badge/npm/package/@ktarmyshov/digraph-js)](https://socket.dev/npm/package/@ktarmyshov/digraph-js/overview)
 
 # digraph-js
 
